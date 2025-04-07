@@ -2,8 +2,20 @@
 
 class PoseReader
 {
+    public static MotorFunctions MotorControl { get; set; }
+    public static bool MotorsInitialized { get; set; }
+
     static void Main(string[] args)
     {
+
+        MotorControl = new MotorFunctions();
+        var status = MotorControl.InitializeDynamixelMotors();
+        MotorsInitialized = MotorFunctions.DynamixelMotorsInitialized;
+        MotorFunctions.CollateMotorArray();
+
+        if (MotorsInitialized) { MotorControl.CreateConnectMotorObjects(); }
+        else Logging.WriteLog("Cannot create connection objects.", Logging.LogType.Error, Logging.LogCaller.MotorControl);
+        
         var robot = new DynamixelController("COM3", 1000000); // Your port and baud rate
         robot.Connect();
 
