@@ -1,6 +1,7 @@
 //
 // This autonomous intelligent system software is the property of Cartheur Research B.V. Copyright 2021 - 2025, all rights reserved.
 //
+#define linux_sbc
 using System.Runtime.InteropServices;
 
 namespace Cartheur.Animals.Robot
@@ -10,7 +11,27 @@ namespace Cartheur.Animals.Robot
     /// </summary>
     public class Dynamixel
     {
+        /// <summary>
+        /// The library path for the Dynamixel C library.
+        /// </summary>
+        // The library path is set to the lib folder in the current directory.
+        // This is where the C library is located.
+        // The path is set to the x64 version of the library for Windows.
+        // For Linux, the path is set to the x86 version of the library.
+        // The path is set to the x64 version of the library for MacOS.
+        // The path is set to the x86 version of the library for MacOS.
+    #if linux32
+        const string LibraryPath = "lib/dxl_x86_c.so";
+    #endif
+    #if linux64
+        const string LibraryPath = "lib/dxl_x64_c.so";
+    #endif
+    #if linux_sbc
+        const string LibraryPath = "lib/dxl_sbc_c.so";
+    #endif
+    #if windows
         const string LibraryPath = "lib/dxl_x64_c.dll";
+    #endif
         //static string SetPath = Path.Combine(Environment.CurrentDirectory, "lib", "dxl_x64_c.dll");
 
         #region PortHandler        
