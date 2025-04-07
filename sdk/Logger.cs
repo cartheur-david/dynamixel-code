@@ -1,5 +1,5 @@
 ﻿//
-// This autonomous intelligent system software is the property of Cartheur Research B.V. Copyright 2021 - 2025, all rights reserved.
+// This autonomous intelligent system software is the property of Cartheur Research B.V. Copryright 2021 - 2025, all rights reserved.
 //
 using System.Text;
 
@@ -28,27 +28,6 @@ namespace Cartheur.Animals.Robot
         /// The type of model to use for the transcript.
         /// </summary>
         public static string TranscriptModelFile { get; set; }
-        /// <summary>
-        /// Whether or not running tests.
-        /// </summary>
-        public static bool TestExecution { get; set; }
-        /// <summary>
-        /// The path for logging and transcripting when testing.
-        /// </summary>
-        public static string TestingPath { get; set; }
-        /// <summary>
-        /// The file path for executing assemblies. Set <see cref="TestExecution"/> to true and indicate the <see cref="TestingPath"/>. Set the active configuration parameter first.
-        /// </summary>
-        public static string FilePath()
-        {
-            if (TestExecution)
-                return TestingPath;
-            if (ActiveConfiguration == "" || ActiveConfiguration == null)
-                return Environment.CurrentDirectory;
-            else
-                return ActiveConfiguration;
-        }
-
         /// <summary>
         /// The type of log to write.
         /// </summary>
@@ -81,13 +60,57 @@ namespace Cartheur.Animals.Robot
         public enum LogCaller
         {
             /// <summary>
-            /// The runtime application.
+            /// The aeon runtime application.
             /// </summary>
-            Runtime,
+            AeonRuntime,
             /// <summary>
-            /// The input.
+            /// The booth runtime aeon application.
             /// </summary>
-            Input,
+            Booth,
+            /// <summary>
+            /// The bot.
+            /// </summary>
+            Bot,
+            /// <summary>
+            /// The conversational aeon application.
+            /// </summary>
+            ConversationalAeonApplication,
+            /// <summary>
+            /// The cryptography engine.
+            /// </summary>
+            Cryptography,
+            /// <summary>
+            /// The onstage demo aeon application.
+            /// </summary>
+            Demo,
+            /// <summary>
+            /// The emotive display.
+            /// </summary>
+            EmotiveDisplay,
+            /// <summary>
+            /// The external bear connection (puppeteering).
+            /// </summary>
+            ExternalBear,
+            /// <summary>
+            /// The external robot connection (puppeteering).
+            /// </summary>
+            ExternalRobotConnection,
+            /// <summary>
+            /// The file template.
+            /// </summary>
+            FileTemplate,
+            /// <summary>
+            /// The interaction.
+            /// </summary>
+            Interaction,
+            /// <summary>
+            /// Marshalling, as in calls to a C-library.
+            /// </summary>
+            Marshal,
+            /// <summary>
+            /// M.E.
+            /// </summary>
+            Me,
             /// <summary>
             /// Memory functions
             /// </summary>
@@ -96,6 +119,14 @@ namespace Cartheur.Animals.Robot
             /// Motor control
             /// </summary>
             MotorControl,
+            /// <summary>
+            /// The nao voicing application.
+            /// </summary>
+            NaoVoicingApplication,
+            /// <summary>
+            /// The non emotive aeon.
+            /// </summary>
+            NonEmotiveAeon,
             /// <summary>
             /// The robot dialogue.
             /// </summary>
@@ -139,13 +170,12 @@ namespace Cartheur.Animals.Robot
         /// <param name="caller">The class creating the log entry.</param>
         public static void WriteLog(string message, LogType logType, LogCaller caller)
         {
-            if(LogModelFile == null)
+            if (LogModelFile == null)
             {
                 LogModelFile = LogModelName;
             }
             LastMessage = message;
-			// Use FilePath() when outside of a test framework.
-            StreamWriter stream = new StreamWriter(FilePath() + @"\logs\" + LogModelFile + @".txt", true);
+            StreamWriter stream = new StreamWriter(Path.Combine(Environment.CurrentDirectory, "logs", LogModelFile + @".txt"), true);
             switch (logType)
             {
                 case LogType.Error:
@@ -157,7 +187,7 @@ namespace Cartheur.Animals.Robot
                 case LogType.Information:
                     stream.WriteLine(DateTime.Now + " - " + message + ". This was called from the class " + caller + ".");
                     break;
-                    case LogType.Temporal:
+                case LogType.Temporal:
                     stream.WriteLine(DateTime.Now + " - " + message + ".");
                     break;
                 case LogType.Gossip:
@@ -180,7 +210,7 @@ namespace Cartheur.Animals.Robot
         {
             try
             {
-                StreamWriter stream = new StreamWriter(FilePath() + @"\logs\transcript.txt", true);
+                StreamWriter stream = new StreamWriter(Path.Combine(Environment.CurrentDirectory, "logs", TranscriptModelFile + @".txt"), true);
                 if (!_fileCreated && fileNumber == 0)
                 {
                     // File has not been created previously, write the header to the file.
@@ -191,7 +221,7 @@ namespace Cartheur.Animals.Robot
                 if (fileNumber != 0)
                 {
                     stream.Dispose();
-                    stream = new StreamWriter(FilePath() + @"\logs\transcript" + fileNumber + ".txt", true);
+                    stream = new StreamWriter(Path.Combine(Environment.CurrentDirectory, "logs", TranscriptModelFile + fileNumber + @".txt"), true);
                     if (!_fileCreated)
                     {
                         stream.WriteLine(@"August 2017 Template" + Environment.NewLine + @"A transcript log for an interative conversation between two aeons, in pursuit of validation / critique of a paper as well as outlining an example of ethical application.");
@@ -222,8 +252,7 @@ namespace Cartheur.Animals.Robot
             }
             try
             {
-				// Use FilePath() when outside of a test framework.
-                StreamWriter stream = new StreamWriter(FilePath() + @"\logs\" + TranscriptModelFile + @".txt", true);
+                StreamWriter stream = new StreamWriter(Path.Combine(Environment.CurrentDirectory, "logs", TranscriptModelFile + @".txt"), true);
                 stream.WriteLine(DateTime.Now + " - " + message);
                 stream.Close();
             }
@@ -231,7 +260,7 @@ namespace Cartheur.Animals.Robot
             {
                 WriteLog(ex.Message, LogType.Error, LogCaller.Me);
             }
-            
+
         }
         /// <summary>
         /// Saves the last result to support analysis of the algorithm.
@@ -241,8 +270,7 @@ namespace Cartheur.Animals.Robot
         {
             try
             {
-                // Use FilePath() when outside of a test framework.
-                StreamWriter stream = new StreamWriter(FilePath() + @"\db\analytics.txt", true);
+                StreamWriter stream = new StreamWriter(Path.Combine(Environment.CurrentDirectory, "db", "analytics" + @".txt"), true);
                 stream.WriteLine(DateTime.Now + " - " + output);
                 stream.Close();
             }
@@ -260,8 +288,7 @@ namespace Cartheur.Animals.Robot
         {
             try
             {
-                // Use FilePath() when outside of a test framework.
-                StreamWriter stream = new StreamWriter(FilePath() + @"\db\analyticsStorage.txt", true);
+                StreamWriter stream = new StreamWriter(Path.Combine(Environment.CurrentDirectory, "db", "analyticsStorage" + @".txt"), true);
                 stream.WriteLine("#" + DateTime.Now + ";" + output);
                 stream.Close();
             }
@@ -277,8 +304,7 @@ namespace Cartheur.Animals.Robot
         /// <param name="objects">The objects.</param>
         public static void Debug(params object[] objects)
         {
-            // Use FilePath() when outside of a test framework.
-            StreamWriter stream = new StreamWriter(FilePath() + @"\logs\debugdump.txt", true);
+            StreamWriter stream = new StreamWriter(Path.Combine(Environment.CurrentDirectory, "logs", "debugdump" + @".txt"), true);
             foreach (object obj in objects)
             {
                 stream.WriteLine(obj);
