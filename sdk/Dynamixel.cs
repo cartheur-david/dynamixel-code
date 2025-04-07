@@ -21,8 +21,8 @@ namespace Cartheur.Animals.Robot
         // The path is set to the x64 version of the library for Linux 64-bit.
         // The path is set to the SBC version of the library for Linux SBC.
         // The path is set to the x86 version of the library for Linux 32-bit.
-    #if linux32
-        const string LibraryPath = "lib/dxl_x86_c.so";
+    #if windows
+        const string LibraryPath = "lib/dxl_x64_c.dll";
     #endif
     #if linux64
         const string LibraryPath = "lib/dxl_x64_c.so";
@@ -30,10 +30,10 @@ namespace Cartheur.Animals.Robot
     #if linux_sbc
         const string LibraryPath = "lib/dxl_sbc_c.so";
     #endif
-    #if windows
-        const string LibraryPath = "lib/dxl_x64_c.dll";
+        #if linux32
+        const string LibraryPath = "lib/dxl_x86_c.so";
     #endif
-        //static string SetPath = Path.Combine(Environment.CurrentDirectory, "lib", "dxl_x64_c.dll");
+
 
         #region PortHandler        
         /// <summary>
