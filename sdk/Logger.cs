@@ -1,8 +1,6 @@
 ﻿//
 // This autonomous intelligent system software is the property of Cartheur Research B.V. Copyright 2021 - 2025, all rights reserved.
 //
-using System;
-using System.IO;
 using System.Text;
 
 namespace Cartheur.Animals.Robot
@@ -83,97 +81,13 @@ namespace Cartheur.Animals.Robot
         public enum LogCaller
         {
             /// <summary>
-            /// The aeon.
+            /// The runtime application.
             /// </summary>
-            Aeon,
-            /// <summary>
-            /// The aeon runtime application.
-            /// </summary>
-            AeonRuntime,
-            /// <summary>
-            /// The aeon loader.
-            /// </summary>
-            AeonLoader,
-            /// <summary>
-            /// The booth runtime aeon application.
-            /// </summary>
-            Booth,
-            /// <summary>
-            /// The bot.
-            /// </summary>
-            Bot,
-            /// <summary>
-            /// The conversational aeon application.
-            /// </summary>
-            ConversationalAeonApplication,
-            /// <summary>
-            /// The cognizance ideal.
-            /// </summary>
-            Cognizance,
-            /// <summary>
-            /// The conditional manager.
-            /// </summary>
-            Condition,
-            /// <summary>
-            /// The cryptography engine.
-            /// </summary>
-            Cryptography,
-            /// <summary>
-            /// The onstage demo aeon application.
-            /// </summary>
-            Demo,
-            /// <summary>
-            /// The emotive display.
-            /// </summary>
-            EmotiveDisplay,
-            /// <summary>
-            /// The external bear connection (puppeteering).
-            /// </summary>
-            ExternalBear,
-            /// <summary>
-            /// The external robot connection (puppeteering).
-            /// </summary>
-            ExternalRobotConnection,
-            /// <summary>
-            /// The file template.
-            /// </summary>
-            FileTemplate,
-            /// <summary>
-            /// The get.
-            /// </summary>
-            Get,
-            /// <summary>
-            /// The gossip.
-            /// </summary>
-            Gossip,
+            Runtime,
             /// <summary>
             /// The input.
             /// </summary>
             Input,
-            /// <summary>
-            /// The interaction.
-            /// </summary>
-            Interaction,
-            /// <summary>
-            /// The indications.
-            /// </summary>
-            Indications,
-            /// <summary>
-            /// The learn.
-            /// </summary>
-            Learn,
-            /// <summary>
-            /// The learning thread.
-            /// </summary>
-            LearningThread,
-            /// <summary>
-            /// Marshalling, as in calls to a C-library.
-            /// </summary>
-            Marshal,
-            /// <summary>
-            /// M.E.
-            /// </summary>
-            Me,
             /// <summary>
             /// Memory functions
             /// </summary>
@@ -183,77 +97,17 @@ namespace Cartheur.Animals.Robot
             /// </summary>
             MotorControl,
             /// <summary>
-            /// The mono runtime.
-            /// </summary>
-            MonoRuntime,
-            /// <summary>
-            /// The mood.
-            /// </summary>
-            Mood,
-            /// <summary>
-            /// The nao voicing application.
-            /// </summary>
-            NaoVoicingApplication,
-            /// <summary>
-            /// The node.
-            /// </summary>
-            Node,
-            /// <summary>
-            /// The non emotive aeon.
-            /// </summary>
-            NonEmotiveAeon,
-            /// <summary>
             /// The robot dialogue.
             /// </summary>
             RobotDialogue,
-            /// <summary>
-            /// The result.
-            /// </summary>
-            Result,
-            /// <summary>
-            /// The script.
-            /// </summary>
-            Script,
-            /// <summary>
-            /// The set.
-            /// </summary>
-            Set,
-            /// <summary>
-            /// The shared function.
-            /// </summary>
-            SharedFunction,
             /// <summary>
             /// The speech recognizer.
             /// </summary>
             SpeechRecognizer,
             /// <summary>
-            /// The star lexicon.
-            /// </summary>
-            Star,
-            /// <summary>
             /// The test framework.
             /// </summary>
-            TestFramework,
-            /// <summary>
-            /// The that lexicon.
-            /// </summary>
-            That,
-            /// <summary>
-            /// The that star lexicon.
-            /// </summary>
-            ThatStar,
-            /// <summary>
-            /// The think.
-            /// </summary>
-            Think,
-            /// <summary>
-            /// The topic star lexicon.
-            /// </summary>
-            TopicStar,
-            /// <summary>
-            /// The XMS.
-            /// </summary>
-            Xms
+            TestFramework
         }
         /// <summary>
         /// The last message passed to logging.
