@@ -6,11 +6,11 @@ class PoseReader
     public static MotorSequence MotorSequences { get; set; }
     public static bool MotorsInitialized { get; set; }
 
-    static void Main(string[] args)
+    static async Task Main()
     {
         MotorControl = new MotorFunctions();
         MotorSequences = new MotorSequence();
-        var status = MotorControl.InitializeDynamixelMotors();
+        Console.WriteLine(MotorFunctions.InitializeDynamixelMotors());
         MotorsInitialized = MotorFunctions.DynamixelMotorsInitialized;
         MotorFunctions.CollateMotorArray();
 
@@ -25,9 +25,9 @@ class PoseReader
         var leftLeg = MotorSequences.ReturnDictionaryOfPositions(Limbic.LeftLeg);
         var rightLeg = MotorSequences.ReturnDictionaryOfPositions(Limbic.RightLeg);
 
-        // Output as code-friendly format
+        // Output as code-friendly format.
         Console.WriteLine("\nStanding pose dictionary:");
-        Console.Write("var standingPose = new Dictionary<string, int> { ");
+        Console.Write("var currentPose = new Dictionary<string, int> { ");
         foreach (var kvp in abdomen)
         {
             Console.Write($"{{ {kvp.Key}, {kvp.Value} }}, ");
@@ -43,6 +43,8 @@ class PoseReader
         Console.WriteLine("};");
 
         // Dispose resources.
-        MotorControl.DisposeDynamixelMotors();
+        MotorFunctions.DisposeDynamixelMotors();
+
+        await Task.CompletedTask;
     }
 }
