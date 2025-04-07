@@ -41,6 +41,7 @@ class PoseReader
             Console.Write($"{{ {kvp.Key}, {kvp.Value} }}, ");
         }
         Console.WriteLine("};");
+        Console.ReadLine(); // Wait for you to view the position values.
 
         // Dispose resources.
         MotorFunctions.DisposeDynamixelMotors();

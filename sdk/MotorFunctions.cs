@@ -20,7 +20,7 @@ namespace Cartheur.Animals.Robot
         public static bool CorrectlyExecuted { get; set; }
         public bool StartupInitialized { get; set; }
         public static bool BaudRateSet { get; set; }
-        public static bool ActivePortSet = true;
+        public static bool ActivePortSet { get; set; }
         public static bool DynamixelMotorsInitialized = false;
         public const string DeviceUpper = "COM4";
         public const string DeviceLower = "COM5";

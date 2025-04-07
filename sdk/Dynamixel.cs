@@ -10,7 +10,8 @@ namespace Cartheur.Animals.Robot
     /// </summary>
     public class Dynamixel
     {
-        string LibraryPath = Path.Combine(Environment.CurrentDirectory, "lib",  "dxl_x64_c.dll");
+        const string LibraryPath = "lib/dxl_x64_c.dll";
+        //static string SetPath = Path.Combine(Environment.CurrentDirectory, "lib", "dxl_x64_c.dll");
 
         #region PortHandler        
         /// <summary>

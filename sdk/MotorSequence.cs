@@ -21,10 +21,10 @@ namespace Cartheur.Animals.Robot
             SequenceCommand= new Dictionary<string, int>();
             MotorArrayOfInterest= new Dictionary<string, int>();
             MotorArraysOfInterest= new List<Dictionary<string, int>>();
-            MotorControl= new MotorFunctions();
+            //MotorControl= new MotorFunctions();
             // Due to experience with the second instance overriding the first, check this.
-            MotorTraining = new Remember(@"\db\trainings.db");
-            LimbicRetrieval = new Remember(@"\db\positions.db");
+            //MotorTraining = new Remember(@"\db\trainings.db");
+            //LimbicRetrieval = new Remember(@"\db\positions.db");
         }
         /// <summary>
         /// Creates the dictionary of positions based upon the <see cref="Limbic.LimbicArea"/>
