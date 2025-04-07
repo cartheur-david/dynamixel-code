@@ -30,7 +30,6 @@ namespace Cartheur.Animals.Robot
             CommandSyntax = new Syntax();
             // Retrieve all available data from the database and populate the dictionaries.
             CompileSyntax();
-            var hold = 0;
         }
         /// <summary>
         /// Initializes a new instance of the <see cref="Remember"/> class. Use this constructor with the desired database for storage.

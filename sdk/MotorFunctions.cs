@@ -80,7 +80,7 @@ namespace Cartheur.Animals.Robot
             // Add known basic parameters.
             Pid = new ushort[] { 4, 0, 0 };
         }
-        public void SetActivePorts()
+        public static void SetActivePorts()
         {
             try
             {
@@ -94,7 +94,7 @@ namespace Cartheur.Animals.Robot
                 Logging.WriteLog(ex.Message, Logging.LogType.Error, Logging.LogCaller.MotorControl);
             }
         }
-        public string InitializeDynamixelMotors()
+        public static string InitializeDynamixelMotors()
         {
             if (MotorFunctions.ActivePortSet)
             {
@@ -112,7 +112,7 @@ namespace Cartheur.Animals.Robot
             }
             return "Ports have been opened." + Environment.NewLine;
         }
-        public string DisposeDynamixelMotors()
+        public static string DisposeDynamixelMotors()
         {
             if (MotorFunctions.ActivePortSet)
             {
@@ -281,7 +281,7 @@ namespace Cartheur.Animals.Robot
         }
 
         #region The gets for the motors
-        public Dictionary<string, int> GetPresentPositions(string[] limbics)
+        public static Dictionary<string, int> GetPresentPositions(string[] limbics)
         {
             var allPositions = new Dictionary<string, int>();
             for (int i = 0; i < limbics.Length; i++)
@@ -302,7 +302,7 @@ namespace Cartheur.Animals.Robot
             }
             return allPositions;
         }
-        public ushort GetPresentPosition(string motor)
+        public static ushort GetPresentPosition(string motor)
         {
             var location = Motor.ReturnLocation(motor);
             if (location == "upper")
@@ -388,7 +388,7 @@ namespace Cartheur.Animals.Robot
         {
             RobotMotorObjects.Where(c => c.Name == name).FirstOrDefault().UpperLimit = limit;
         }
-        public void IsTorqueOn(string region)
+        public static void IsTorqueOn(string region)
         {
 
         }
@@ -405,12 +405,10 @@ namespace Cartheur.Animals.Robot
                     TorqueOn = Dynamixel.read1ByteTxRx(PortNumberLower, ProtocolVersion, Motor.ReturnID(motors[i]), MxAddress);
                 if (TorqueOn == 1)
                     return true;
-                else
-                    return result;
             }
             return result;
         }
-        public void SetTorqueOn(string region)
+        public static void SetTorqueOn(string region)
         {
             switch (region)
             {
@@ -474,7 +472,7 @@ namespace Cartheur.Animals.Robot
                     return;
             }
         }
-        public void SetTorqueOn(string[] motors)
+        public static void SetTorqueOn(string[] motors)
         {
             string motorArea = "";
             for (int i = 0; i < motors.Length; i++)
@@ -486,7 +484,7 @@ namespace Cartheur.Animals.Robot
                     Dynamixel.write1ByteTxRx(PortNumberLower, ProtocolVersion, Motor.ReturnID(motors[i]), MxAddress, TorqueEnable);
             }
         }
-        public void SetTorqueOff(string region)
+        public static void SetTorqueOff(string region)
         {
             switch (region)
             {
@@ -551,7 +549,7 @@ namespace Cartheur.Animals.Robot
                     return;
             }
         }
-        public void SetTorqueOff(string[] motors)
+        public static void SetTorqueOff(string[] motors)
         {
             string motorArea = "";
             for (int i = 0; i < motors.Length; i++) 

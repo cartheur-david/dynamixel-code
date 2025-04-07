@@ -35,7 +35,7 @@ namespace Cartheur.Animals.Robot
             foreach (var line in motorArray)
             {
                 // Get the current positions of the motors listed in the array.
-                MotorArrayOfInterest.Add(line, MotorControl.GetPresentPosition(line));
+                MotorArrayOfInterest.Add(line, MotorFunctions.GetPresentPosition(line));
                 MotorArraysOfInterest.Add(MotorArrayOfInterest);
             }
         }
@@ -50,7 +50,7 @@ namespace Cartheur.Animals.Robot
             foreach (var line in motorArray)
             {
                 // Get the current positions of the motors listed in the array.
-                MotorArrayOfInterest.Add(line, MotorControl.GetPresentPosition(line));
+                MotorArrayOfInterest.Add(line, MotorFunctions.GetPresentPosition(line));
                 MotorArraysOfInterest.Add(MotorArrayOfInterest);
             }
             return MotorArrayOfInterest;
@@ -66,7 +66,7 @@ namespace Cartheur.Animals.Robot
         {
             foreach (var line in motorArray)
             {
-                TrainingMotorSequence.Add(line, MotorControl.GetPresentPosition(line));
+                TrainingMotorSequence.Add(line, MotorFunctions.GetPresentPosition(line));
             }
             MotorTraining.StoreTrainingSequence(sequence, trainingSelection, TrainingMotorSequence, instance.DataBaseTag);
         }
