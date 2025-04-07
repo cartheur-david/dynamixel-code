@@ -34,7 +34,6 @@ namespace Cartheur.Animals.Robot
         const string LibraryPath = "lib/dxl_x86_c.so";
     #endif
 
-
         #region PortHandler        
         /// <summary>
         /// The port handler containing the functions needed for port communication.
