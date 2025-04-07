@@ -14,12 +14,13 @@ namespace Cartheur.Animals.Robot
         /// <summary>
         /// The library path for the Dynamixel C library.
         /// </summary>
-        // The library path is set to the lib folder in the current directory.
-        // This is where the C library is located.
-        // The path is set to the x64 version of the library for Windows.
-        // For Linux, the path is set to the x86 version of the library.
-        // The path is set to the x64 version of the library for MacOS.
-        // The path is set to the x86 version of the library for MacOS.
+        // The library path is set to the lib folder in the current directory. This is where the C library is located.
+        // For Windows:
+        // The path is set to the x64 version of the library for Windows 64-bit.
+        // For Linux:
+        // The path is set to the x64 version of the library for Linux 64-bit.
+        // The path is set to the SBC version of the library for Linux SBC.
+        // The path is set to the x86 version of the library for Linux 32-bit.
     #if linux32
         const string LibraryPath = "lib/dxl_x86_c.so";
     #endif
