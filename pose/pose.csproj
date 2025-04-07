@@ -11,4 +11,14 @@
     <ProjectReference Include="..\sdk\library.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="logs\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="logs\log.txt.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
