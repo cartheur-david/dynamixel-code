@@ -2,7 +2,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.2.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dynamixel-sdk", "dynamixel-sdk.csproj", "{C988FC3E-CCBD-75A9-9BAF-5619B8FF8BC7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "library", "sdk\library.csproj", "{A649D0D0-A225-B6A2-B3D7-D79F7F369C48}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pose", "pose\pose.csproj", "{94D4C86E-7537-1AC0-D9B7-99A89EFC32F7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -10,10 +12,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{C988FC3E-CCBD-75A9-9BAF-5619B8FF8BC7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C988FC3E-CCBD-75A9-9BAF-5619B8FF8BC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C988FC3E-CCBD-75A9-9BAF-5619B8FF8BC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C988FC3E-CCBD-75A9-9BAF-5619B8FF8BC7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A649D0D0-A225-B6A2-B3D7-D79F7F369C48}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A649D0D0-A225-B6A2-B3D7-D79F7F369C48}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A649D0D0-A225-B6A2-B3D7-D79F7F369C48}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A649D0D0-A225-B6A2-B3D7-D79F7F369C48}.Release|Any CPU.Build.0 = Release|Any CPU
+		{94D4C86E-7537-1AC0-D9B7-99A89EFC32F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{94D4C86E-7537-1AC0-D9B7-99A89EFC32F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{94D4C86E-7537-1AC0-D9B7-99A89EFC32F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{94D4C86E-7537-1AC0-D9B7-99A89EFC32F7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
