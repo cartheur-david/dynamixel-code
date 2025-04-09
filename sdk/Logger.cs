@@ -34,21 +34,17 @@ namespace Cartheur.Animals.Robot
         public enum LogType
         {
             /// <summary>
-            /// The informational log.
+            /// The data log.
             /// </summary>
-            Information,
+            Data,
             /// <summary>
             /// The error log.
             /// </summary>
             Error,
             /// <summary>
-            /// The gossip log.
+            /// The information log.
             /// </summary>
-            Gossip,
-            /// <summary>
-            /// The temporal log.
-            /// </summary>
-            Temporal,
+            Information,
             /// <summary>
             /// The warning log.
             /// </summary>
@@ -60,38 +56,6 @@ namespace Cartheur.Animals.Robot
         public enum LogCaller
         {
             /// <summary>
-            /// The aeon runtime application.
-            /// </summary>
-            AeonRuntime,
-            /// <summary>
-            /// The booth runtime aeon application.
-            /// </summary>
-            Booth,
-            /// <summary>
-            /// The bot.
-            /// </summary>
-            Bot,
-            /// <summary>
-            /// The conversational aeon application.
-            /// </summary>
-            ConversationalAeonApplication,
-            /// <summary>
-            /// The cryptography engine.
-            /// </summary>
-            Cryptography,
-            /// <summary>
-            /// The onstage demo aeon application.
-            /// </summary>
-            Demo,
-            /// <summary>
-            /// The emotive display.
-            /// </summary>
-            EmotiveDisplay,
-            /// <summary>
-            /// The external bear connection (puppeteering).
-            /// </summary>
-            ExternalBear,
-            /// <summary>
             /// The external robot connection (puppeteering).
             /// </summary>
             ExternalRobotConnection,
@@ -100,9 +64,9 @@ namespace Cartheur.Animals.Robot
             /// </summary>
             FileTemplate,
             /// <summary>
-            /// The interaction.
+            /// The joi pose calibrator.
             /// </summary>
-            Interaction,
+            JoiPose,
             /// <summary>
             /// Marshalling, as in calls to a C-library.
             /// </summary>
@@ -118,27 +82,7 @@ namespace Cartheur.Animals.Robot
             /// <summary>
             /// Motor control
             /// </summary>
-            MotorControl,
-            /// <summary>
-            /// The nao voicing application.
-            /// </summary>
-            NaoVoicingApplication,
-            /// <summary>
-            /// The non emotive aeon.
-            /// </summary>
-            NonEmotiveAeon,
-            /// <summary>
-            /// The robot dialogue.
-            /// </summary>
-            RobotDialogue,
-            /// <summary>
-            /// The speech recognizer.
-            /// </summary>
-            SpeechRecognizer,
-            /// <summary>
-            /// The test framework.
-            /// </summary>
-            TestFramework
+            MotorControl
         }
         /// <summary>
         /// The last message passed to logging.
@@ -178,6 +122,9 @@ namespace Cartheur.Animals.Robot
             StreamWriter stream = new StreamWriter(Path.Combine(Environment.CurrentDirectory, "logs", LogModelFile + @".txt"), true);
             switch (logType)
             {
+                case LogType.Data:
+                    stream.WriteLine(message);
+                    break;
                 case LogType.Error:
                     stream.WriteLine(DateTime.Now + " - " + " ERROR " + " - " + message + " from class " + caller + ".");
                     break;
@@ -186,12 +133,6 @@ namespace Cartheur.Animals.Robot
                     break;
                 case LogType.Information:
                     stream.WriteLine(DateTime.Now + " - " + message + ". This was called from the class " + caller + ".");
-                    break;
-                case LogType.Temporal:
-                    stream.WriteLine(DateTime.Now + " - " + message + ".");
-                    break;
-                case LogType.Gossip:
-                    stream.WriteLine(DateTime.Now + " - " + message + ".");
                     break;
             }
             stream.Close();
