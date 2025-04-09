@@ -396,6 +396,6 @@ FodyWeavers.xsd
 *.msm
 *.msp
 
-# JetBrains Rider
-*.sln.iml
+# Myne
 pose/logs/log.txt
+/sdk/Dynamixel.cs
