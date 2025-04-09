@@ -1,4 +1,7 @@
-﻿using Cartheur.Animals.Robot;
+﻿//
+// This autonomous intelligent system software is the property of Cartheur Research B.V. Copyright 2021 - 2025, all rights reserved.
+//
+using Cartheur.Animals.Robot;
 using ConsoleTables;
 
 class PoseReader
