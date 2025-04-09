@@ -3,3 +3,4 @@ Joi standing and walking
 
 09.04.2025
 	1728: The code is correct, lean and mean.
+	1915: Learned that my code is more intuitive than one thinks. Suprises are good for the spirit.
