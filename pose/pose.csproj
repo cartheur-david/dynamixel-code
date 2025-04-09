@@ -8,7 +8,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="bin\Debug\net9.0\logs\all-motors.txt" />
     <Content Include="bin\Debug\net9.0\logs\log.txt" />
+    <Content Include="data\all-motors.txt" />
     <Content Include="data\sitting-pose.txt" />
     <Content Include="data\pose-data.txt" />
   </ItemGroup>
