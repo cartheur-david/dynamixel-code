@@ -1,4 +1,5 @@
 ﻿using Cartheur.Animals.Robot;
+using ConsoleTables;
 
 class PoseReader
 {
@@ -26,21 +27,30 @@ class PoseReader
         var rightLeg = MotorSequences.ReturnDictionaryOfPositions(Limbic.RightLeg);
 
         // Output as code-friendly format.
-        Console.WriteLine("\nStanding pose dictionary:");
-        Console.Write("var currentPose = new Dictionary<string, int> { ");
+        Console.WriteLine("\nStanding pose dictionary:" + Environment.NewLine);
+
+        var tableAbdomen = new ConsoleTable("abdomen-motor", "position");
+        var tableLeftLeg = new ConsoleTable("left-leg-motor", "position");
+        var tablerightLeg = new ConsoleTable("right-leg-motor", "position");
+
         foreach (var kvp in abdomen)
         {
-            Console.Write($"{{ {kvp.Key}, {kvp.Value} }}, ");
+            tableAbdomen.AddRow(kvp.Key, kvp.Value);
         }
+        tableAbdomen.Write();
+        Console.WriteLine();
         foreach (var kvp in leftLeg)
         {
-            Console.Write($"{{ {kvp.Key}, {kvp.Value} }}, ");
+            tableLeftLeg.AddRow(kvp.Key, kvp.Value);
         }
+        tableLeftLeg.Write();
+        Console.WriteLine();
         foreach (var kvp in rightLeg)
         {
-            Console.Write($"{{ {kvp.Key}, {kvp.Value} }}, ");
+            tablerightLeg.AddRow(kvp.Key, kvp.Value);
         }
-        Console.WriteLine("};");
+        tablerightLeg.Write();
+        Console.WriteLine();
         Console.ReadLine(); // Wait for you to view the position values.
 
         // Dispose resources.
