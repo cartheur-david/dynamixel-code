@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <Content Include="bin\Debug\net9.0\logs\log.txt" />
+    <Content Include="data\pose-data.txt" />
   </ItemGroup>
 
   <ItemGroup>
