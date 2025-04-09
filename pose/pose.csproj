@@ -8,6 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="bin\Debug\net9.0\logs\log.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\sdk\library.csproj" />
   </ItemGroup>
 
