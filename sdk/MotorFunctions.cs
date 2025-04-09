@@ -96,7 +96,7 @@ namespace Cartheur.Animals.Robot
         }
         public static string InitializeDynamixelMotors()
         {
-            if (MotorFunctions.ActivePortSet)
+            if (!MotorFunctions.ActivePortSet)
             {
                 try
                 {
@@ -110,6 +110,7 @@ namespace Cartheur.Animals.Robot
                     return ex.Message.ToString();
                 }
             }
+            DynamixelMotorsInitialized = true;
             return "Ports have been opened." + Environment.NewLine;
         }
         public static string DisposeDynamixelMotors()
