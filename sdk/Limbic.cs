@@ -4,7 +4,7 @@
 namespace Cartheur.Animals.Robot
 {
     /// <summary>
-    /// The collection of motors by limbic, or, analogous human limbs on the robot.
+    /// The collection of motors by limbic, or, analogous human limbs on the joi robot.
     /// </summary>
     /// <remarks>Pelvis is a part of the respective leg-limbic areas.</remarks>
     public static class Limbic
@@ -26,7 +26,7 @@ namespace Cartheur.Animals.Robot
         public static string[] LeftAnkle = { "l_ankle_y" };
         public static string[] RightAnkle = { "r_ankle_y" };
         /// <summary>
-        /// The full list of limbic declarations for david.
+        /// The full list of limbic declarations for the joi robot.
         /// </summary>
         /// <remarks>A full-set of twenty-five motors.</remarks>
         public static string[] All = { "abs_y", "abs_x", "abs_z", "bust_y", "bust_x", "head_z", "head_y", "l_shoulder_y", "l_shoulder_x", "l_arm_z", "l_elbow_y", "r_shoulder_y", "r_shoulder_x", "r_arm_z", "r_elbow_y", "l_hip_z", "l_hip_y", "l_knee_y", "l_ankle_y", "l_hip_x", "r_hip_z", "r_hip_y", "r_knee_y", "r_ankle_y", "r_hip_x" };
