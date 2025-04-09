@@ -11,10 +11,8 @@ class PoseReader
     public static MotorSequence MotorSequenceBust { get; set; }
     public static MotorSequence MotorSequenceLeftArm { get; set; }
     public static MotorSequence MotorSequenceLeftLeg { get; set; }
-    public static MotorSequence MotorSequenceLeftPelvis { get; set; }
     public static MotorSequence MotorSequenceRightArm { get; set; }
     public static MotorSequence MotorSequenceRightLeg { get; set; }
-    public static MotorSequence MotorSequenceRightPelvis { get; set; }
     public static bool MotorsInitialized { get; set; }
 
     static async Task Main()
@@ -24,10 +22,8 @@ class PoseReader
         MotorSequenceBust = new MotorSequence();
         MotorSequenceLeftArm = new MotorSequence();
         MotorSequenceLeftLeg = new MotorSequence();
-        MotorSequenceLeftPelvis = new MotorSequence();
         MotorSequenceRightArm = new MotorSequence();
         MotorSequenceRightLeg = new MotorSequence();
-        MotorSequenceRightPelvis = new MotorSequence();
         Console.WriteLine(MotorFunctions.InitializeDynamixelMotors());
         MotorsInitialized = MotorFunctions.DynamixelMotorsInitialized;
         MotorFunctions.CollateMotorArray();
@@ -83,16 +79,6 @@ class PoseReader
         tableLeftLeg.Write();
         Console.WriteLine();
         Logging.WriteLog(tableLeftLeg.ToString(), Logging.LogType.Data, Logging.LogCaller.JoiPose);
-        // Left pelvis.
-        var leftPelvis = MotorSequenceLeftPelvis.ReturnDictionaryOfPositions(Limbic.LeftPelvis);
-        var tableLeftPelvis = new ConsoleTable("leftpelvis", "position");
-        foreach (var kvplp in leftPelvis)
-        {
-            tableLeftPelvis.AddRow(kvplp.Key, kvplp.Value);
-        }
-        tableLeftPelvis.Write();
-        Console.WriteLine();
-        Logging.WriteLog(tableLeftPelvis.ToString(), Logging.LogType.Data, Logging.LogCaller.JoiPose);
         // Right arm.
         var rightArm = MotorSequenceRightArm.ReturnDictionaryOfPositions(Limbic.RightArm);
         var tablerightArm = new ConsoleTable("rightarm", "position");
@@ -113,16 +99,6 @@ class PoseReader
         tablerightLeg.Write();
         Console.WriteLine();
         Logging.WriteLog(tablerightLeg.ToString(), Logging.LogType.Data, Logging.LogCaller.JoiPose);
-        // Right pelvis.
-        var rightPelvis = MotorSequenceRightPelvis.ReturnDictionaryOfPositions(Limbic.RightPelvis);
-        var tablerightPelvis = new ConsoleTable("rightpelvis", "position");
-        foreach (var kvpr in rightPelvis)
-        {
-            tablerightPelvis.AddRow(kvpr.Key, kvpr.Value);
-        }
-        tablerightPelvis.Write();
-        Console.WriteLine();
-        Logging.WriteLog(tablerightPelvis.ToString(), Logging.LogType.Data, Logging.LogCaller.JoiPose);
 
         Console.WriteLine("If wanting to rescan, type 'do', otherwise Enter to exit.");
         var input = Console.ReadLine(); // Wait for you to view the position values.
