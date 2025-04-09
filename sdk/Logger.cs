@@ -142,6 +142,41 @@ namespace Cartheur.Animals.Robot
             }
         }
         /// <summary>
+        /// Logs a message sent from the calling application to a file.
+        /// </summary>
+        /// <param name="message">The message to log. Space between the message and log type enumeration provided.</param>
+        /// <param name="logType">Type of the log.</param>
+        /// <param name="caller">The class creating the log entry.</param>
+        public static void WriteLog(string message, LogType logType, LogCaller caller, string LogModelFile)
+        {
+            if (LogModelFile == "")
+            {
+                LogModelFile = LogModelName;
+            }
+            LastMessage = message;
+            StreamWriter stream = new StreamWriter(Path.Combine(Environment.CurrentDirectory, "logs", LogModelFile + @".txt"), true);
+            switch (logType)
+            {
+                case LogType.Data:
+                    stream.WriteLine(message);
+                    break;
+                case LogType.Error:
+                    stream.WriteLine(DateTime.Now + " - " + " ERROR " + " - " + message + " from class " + caller + ".");
+                    break;
+                case LogType.Warning:
+                    stream.WriteLine(DateTime.Now + " - " + " WARNING " + " - " + message + " from class " + caller + ".");
+                    break;
+                case LogType.Information:
+                    stream.WriteLine(DateTime.Now + " - " + message + ". This was called from the class " + caller + ".");
+                    break;
+            }
+            stream.Close();
+            if (!Equals(null, ReturnedToConsole))
+            {
+                ReturnedToConsole();
+            }
+        }
+        /// <summary>
         /// Records a transcript of the conversation.
         /// </summary>
         /// <param name="message">The message to save in transcript format.</param>
