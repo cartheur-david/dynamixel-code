@@ -26,7 +26,8 @@ class PoseReader
         Console.ReadLine(); // Wait for you to position it.
 
         // Read and display current positions.
-        Console.WriteLine("\nStanding pose dictionary:" + Environment.NewLine);
+        Console.WriteLine("\nSitting pose:" + Environment.NewLine);
+        Logging.WriteLog("Sitting pose:" + Environment.NewLine, Logging.LogType.Data, Logging.LogCaller.JoiPose);
     repeat:
         var abdomen = MotorSequenceAbdomen.ReturnDictionaryOfPositions(Limbic.Abdomen);
         var tableAbdomen = new ConsoleTable("abdomen-motor", "position");
@@ -36,6 +37,7 @@ class PoseReader
         }
         tableAbdomen.Write();
         Console.WriteLine();
+        Logging.WriteLog(tableAbdomen.ToString(), Logging.LogType.Data, Logging.LogCaller.JoiPose);
 
         var leftLeg = MotorSequenceLeftLeg.ReturnDictionaryOfPositions(Limbic.LeftLeg);
         var tableLeftLeg = new ConsoleTable("left-leg-motor", "position");
@@ -45,6 +47,7 @@ class PoseReader
         }
         tableLeftLeg.Write();
         Console.WriteLine();
+        Logging.WriteLog(tableLeftLeg.ToString(), Logging.LogType.Data, Logging.LogCaller.JoiPose);
 
         var rightLeg = MotorSequenceRightLeg.ReturnDictionaryOfPositions(Limbic.RightLeg);
         var tablerightLeg = new ConsoleTable("right-leg-motor", "position");
@@ -54,6 +57,8 @@ class PoseReader
         }
         tablerightLeg.Write();
         Console.WriteLine();
+        Logging.WriteLog(tablerightLeg.ToString(), Logging.LogType.Data, Logging.LogCaller.JoiPose);
+
         Console.WriteLine("If wanting to rescan, type 'do'.");
         var input = Console.ReadLine(); // Wait for you to view the position values.
         if (input == "do")
