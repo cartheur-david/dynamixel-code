@@ -8,3 +8,4 @@ Joi standing and walking
 	1052: Now that we are closer to actually using the code, adding a torque-freeze and unfreeze from console would be helpful to lock and record positions. I suspect the next problem will be refining the pose and only unfreezing limbic areas or individual joints for precision.
 	1158: Done. Added settings feature from haden.
 	1207: Cleaned the code and have 300-lines of focused-joi.
+	1214: Now to add the voice-control interface. Since: How can I set the positions when both hands will be required? Sure, locked into windoze, but this is a calibratino program after all.
