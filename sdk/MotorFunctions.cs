@@ -409,7 +409,7 @@ namespace Cartheur.Animals.Robot
             }
             return result;
         }
-        public static void SetTorqueOn(string region)
+        public void SetTorqueOn(string region)
         {
             switch (region)
             {
@@ -473,7 +473,7 @@ namespace Cartheur.Animals.Robot
                     return;
             }
         }
-        public static void SetTorqueOn(string[] motors)
+        public void SetTorqueOn(string[] motors)
         {
             string motorArea = "";
             for (int i = 0; i < motors.Length; i++)
@@ -485,7 +485,7 @@ namespace Cartheur.Animals.Robot
                     Dynamixel.write1ByteTxRx(PortNumberLower, ProtocolVersion, Motor.ReturnID(motors[i]), MxAddress, TorqueEnable);
             }
         }
-        public static void SetTorqueOff(string region)
+        public void SetTorqueOff(string region)
         {
             switch (region)
             {
@@ -550,7 +550,7 @@ namespace Cartheur.Animals.Robot
                     return;
             }
         }
-        public static void SetTorqueOff(string[] motors)
+        public void SetTorqueOff(string[] motors)
         {
             string motorArea = "";
             for (int i = 0; i < motors.Length; i++) 

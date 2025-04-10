@@ -9,7 +9,7 @@ namespace Cartheur.Animals.Robot
     /// <remarks>Pelvis is a part of the respective leg-limbic areas.</remarks>
     public static class Limbic
     {
-        public enum LimbicArea { Abdomen, Bust, Head, LeftArm, RightArm, LeftPelvis, RightPelvis, LeftLeg, RightLeg }
+        public enum LimbicArea { Abdomen, All, Bust, Head, LeftArm, RightArm, LeftPelvis, RightPelvis, LeftLeg, RightLeg }
 
         public static readonly string[] Abdomen = { "abs_y", "abs_x", "abs_z" };
         public static readonly string[] Bust = { "bust_y", "bust_x" };
