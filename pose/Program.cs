@@ -209,7 +209,8 @@ class PoseReader
 
         if (MotorsInitialized) { MotorControl.CreateConnectMotorObjects(); }
         else Logging.WriteLog("Cannot create connection objects.", Logging.LogType.Error, Logging.LogCaller.MotorControl);
-
+        
+        // Program help.
         Console.WriteLine("Hold the robot in the desired pose for motor capture, then press Enter...");
         Console.WriteLine("For reference: Limbic areas are: Abdomen, Bust, Head, LeftArm, RightArm, LeftLeg, RightLeg.");
         Console.WriteLine("The current Limbic areas of LeftLeg and RightLeg include the respective pelvis motors, given the 'average walking' model.");
@@ -226,12 +227,13 @@ class PoseReader
         tableAll.Write();
         Console.WriteLine();
         Logging.WriteLog(tableAll.ToString(), Logging.LogType.Data, Logging.LogCaller.JoiPose, OutputFileName);
- 
+        // Program help.
         Console.WriteLine("If wanting to rescan of everything, type 'do'.");
-        Console.WriteLine("If wanting to recan just a specific limbic region, type 'scan' and one of the supported areas: Abdomen, Bust, LeftArm, RightArm, LeftLeg, RightLeg.");
-        Console.WriteLine("If wanting to set torque-freeze the pose, type 'freeze' and one of the supported areas: Abdomen, Bust, LeftArm, RightArm, LeftLeg, RightLeg.");
-        Console.WriteLine("If wanting to set torque-unfreeze to the pose-area, type 'unfreeze' and one of the supported areas: Abdomen, Bust, LeftArm, RightArm, LeftLeg, RightLeg.");
+        Console.WriteLine("If wanting to rescan just a specific limbic region, type 'scan' and one of the supported areas: Abdomen, Bust, LeftArm, RightArm, LeftLeg, RightLeg.");
+        Console.WriteLine("If wanting to freeze the pose-area, type 'freeze' and one of the supported areas: Abdomen, Bust, LeftArm, RightArm, LeftLeg, RightLeg.");
+        Console.WriteLine("If wanting to unfreeze the pose-area, type 'unfreeze' and one of the supported areas: Abdomen, Bust, LeftArm, RightArm, LeftLeg, RightLeg.");
         Console.WriteLine("Otherwise, hit Enter to exit.");
+
         var input = Console.ReadLine();
         if (input == "do")
             goto repeat;
@@ -291,14 +293,12 @@ class PoseReader
             case "unfreeze RightLeg":
                 await Unfreeze(Limbic.LimbicArea.RightLeg);
                 break;
-
             default:
                 break;
         }
         Console.WriteLine("Pose capture complete.");
         Console.WriteLine("Disposing motors...");
         MotorFunctions.DisposeDynamixelMotors();
-
         await Task.CompletedTask;
     }
 }
