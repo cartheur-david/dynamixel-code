@@ -6,26 +6,204 @@ using ConsoleTables;
 
 class PoseReader
 {
+    public static SettingsDictionary GlobalSettings { get; set; }
+    public static string OutputFileName { get; set; }
     public static MotorFunctions MotorControl { get; set; }
     public static MotorSequence MotorSequenceAll { get; set; }
-    //public static MotorSequence MotorSequenceAbdomen { get; set; }
-    //public static MotorSequence MotorSequenceBust { get; set; }
-    //public static MotorSequence MotorSequenceLeftArm { get; set; }
-    //public static MotorSequence MotorSequenceLeftLeg { get; set; }
-    //public static MotorSequence MotorSequenceRightArm { get; set; }
-    //public static MotorSequence MotorSequenceRightLeg { get; set; }
+    public static MotorSequence MotorSequenceAbdomen { get; set; }
+    public static MotorSequence MotorSequenceBust { get; set; }
+    public static MotorSequence MotorSequenceLeftArm { get; set; }
+    public static MotorSequence MotorSequenceLeftLeg { get; set; }
+    public static MotorSequence MotorSequenceRightArm { get; set; }
+    public static MotorSequence MotorSequenceRightLeg { get; set; }
     public static bool MotorsInitialized { get; set; }
+
+    static async Task LoadSettings()
+    {
+        // Try a default setup using the Settings.xml file.
+        string path = Path.Combine(Environment.CurrentDirectory, Path.Combine("config", "Settings.xml"));
+        GlobalSettings.LoadSettings(path);
+        await Task.CompletedTask;
+    }
+
+    static async Task Freeze(Limbic.LimbicArea area)
+    {
+        switch (area)
+        {
+            case Limbic.LimbicArea.Abdomen:
+                MotorControl.SetTorqueOn(Limbic.Abdomen);
+                break;
+            case Limbic.LimbicArea.All:
+                MotorControl.SetTorqueOn("all");
+                break;
+            case Limbic.LimbicArea.Bust:
+                MotorControl.SetTorqueOn(Limbic.Bust);
+                break;
+            case Limbic.LimbicArea.Head:
+                MotorControl.SetTorqueOn(Limbic.Head);
+                break;
+            case Limbic.LimbicArea.LeftArm:
+                MotorControl.SetTorqueOn(Limbic.LeftArm);
+                break;
+            case Limbic.LimbicArea.RightArm:
+                MotorControl.SetTorqueOn(Limbic.RightArm);
+                break;
+            case Limbic.LimbicArea.LeftPelvis:
+                MotorControl.SetTorqueOn(Limbic.LeftPelvis);
+                break;
+            case Limbic.LimbicArea.RightPelvis:
+                MotorControl.SetTorqueOn(Limbic.RightPelvis);
+                break;
+            case Limbic.LimbicArea.LeftLeg:
+                MotorControl.SetTorqueOn(Limbic.LeftLeg);
+                break;
+            case Limbic.LimbicArea.RightLeg:
+                MotorControl.SetTorqueOn(Limbic.RightLeg);
+                break;
+            default:
+                break;
+        }
+        await Task.CompletedTask;
+    }
+
+    static async Task Unfreeze(Limbic.LimbicArea area)
+    {
+        switch (area)
+        {
+            case Limbic.LimbicArea.Abdomen:
+                MotorControl.SetTorqueOff(Limbic.Abdomen);
+                break;
+            case Limbic.LimbicArea.All:
+                MotorControl.SetTorqueOff("all");
+                break;
+            case Limbic.LimbicArea.Bust:
+                MotorControl.SetTorqueOff(Limbic.Bust);
+                break;
+            case Limbic.LimbicArea.Head:
+                MotorControl.SetTorqueOff(Limbic.Head);
+                break;
+            case Limbic.LimbicArea.LeftArm:
+                MotorControl.SetTorqueOff(Limbic.LeftArm);
+                break;
+            case Limbic.LimbicArea.RightArm:
+                MotorControl.SetTorqueOff(Limbic.RightArm);
+                break;
+            case Limbic.LimbicArea.LeftPelvis:
+                MotorControl.SetTorqueOff(Limbic.LeftPelvis);
+                break;
+            case Limbic.LimbicArea.RightPelvis:
+                MotorControl.SetTorqueOff(Limbic.RightPelvis);
+                break;
+            case Limbic.LimbicArea.LeftLeg:
+                MotorControl.SetTorqueOff(Limbic.LeftLeg);
+                break;
+            case Limbic.LimbicArea.RightLeg:
+                MotorControl.SetTorqueOff(Limbic.RightLeg);
+                break;
+            default:
+                break;
+        }
+        await Task.CompletedTask;
+    }
+
+    static async Task Scan(Limbic.LimbicArea area)
+    {
+        switch (area)
+        {
+            case Limbic.LimbicArea.Abdomen:
+                var abdomen = MotorSequenceAbdomen.ReturnDictionaryOfPositions(Limbic.Abdomen);
+                var tableAbdomen = new ConsoleTable("abdomen", "position");
+                foreach (var kvpa in abdomen)
+                {
+                    tableAbdomen.AddRow(kvpa.Key, kvpa.Value);
+                }
+                tableAbdomen.Write();
+                Console.WriteLine();
+                Logging.WriteLog(tableAbdomen.ToString(), Logging.LogType.Data, Logging.LogCaller.JoiPose);
+                break;
+            case Limbic.LimbicArea.Bust:
+                var bust = MotorSequenceBust.ReturnDictionaryOfPositions(Limbic.Bust);
+                var tableBust = new ConsoleTable("bust", "position");
+                foreach (var kvpb in bust)
+                {
+                    tableBust.AddRow(kvpb.Key, kvpb.Value);
+                }
+                tableBust.Write();
+                Console.WriteLine();
+                Logging.WriteLog(tableBust.ToString(), Logging.LogType.Data, Logging.LogCaller.JoiPose);
+                break;
+            case Limbic.LimbicArea.Head:
+                
+                break;
+            case Limbic.LimbicArea.LeftArm:
+                var leftArm = MotorSequenceLeftArm.ReturnDictionaryOfPositions(Limbic.LeftArm);
+                var tableLeftArm = new ConsoleTable("leftarm", "position");
+                foreach (var kvpla in leftArm)
+                {
+                    tableLeftArm.AddRow(kvpla.Key, kvpla.Value);
+                }
+                tableLeftArm.Write();
+                Console.WriteLine();
+                Logging.WriteLog(tableLeftArm.ToString(), Logging.LogType.Data, Logging.LogCaller.JoiPose);
+                break;
+            case Limbic.LimbicArea.RightArm:
+                var rightArm = MotorSequenceRightArm.ReturnDictionaryOfPositions(Limbic.RightArm);
+                var tablerightArm = new ConsoleTable("rightarm", "position");
+                foreach (var kvpr in rightArm)
+                {
+                    tablerightArm.AddRow(kvpr.Key, kvpr.Value);
+                }
+                tablerightArm.Write();
+                Console.WriteLine();
+                Logging.WriteLog(tablerightArm.ToString(), Logging.LogType.Data, Logging.LogCaller.JoiPose);
+                break;
+            case Limbic.LimbicArea.LeftPelvis:
+                Console.WriteLine("Implemented as a part of the entire leg.");
+                break;
+            case Limbic.LimbicArea.RightPelvis:
+                Console.WriteLine("Implemented as a part of the entire leg.");
+                break;
+            case Limbic.LimbicArea.LeftLeg:
+                var leftLeg = MotorSequenceLeftLeg.ReturnDictionaryOfPositions(Limbic.LeftLeg);
+                var tableLeftLeg = new ConsoleTable("leftleg", "position");
+                foreach (var kvpl in leftLeg)
+                {
+                    tableLeftLeg.AddRow(kvpl.Key, kvpl.Value);
+                }
+                tableLeftLeg.Write();
+                Console.WriteLine();
+                Logging.WriteLog(tableLeftLeg.ToString(), Logging.LogType.Data, Logging.LogCaller.JoiPose);
+                break;
+            case Limbic.LimbicArea.RightLeg:
+                var rightLeg = MotorSequenceRightLeg.ReturnDictionaryOfPositions(Limbic.RightLeg);
+                var tablerightLeg = new ConsoleTable("rightleg", "position");
+                foreach (var kvpr in rightLeg)
+                {
+                    tablerightLeg.AddRow(kvpr.Key, kvpr.Value);
+                }
+                tablerightLeg.Write();
+                Console.WriteLine();
+                Logging.WriteLog(tablerightLeg.ToString(), Logging.LogType.Data, Logging.LogCaller.JoiPose);
+                break;
+            default:
+                break;
+        }
+        await Task.CompletedTask;
+    }
 
     static async Task Main()
     {
+        GlobalSettings = new SettingsDictionary();
+        await LoadSettings();
+        OutputFileName = GlobalSettings.GrabSetting("outputfile");
         MotorControl = new MotorFunctions();
         MotorSequenceAll = new MotorSequence();
-        //MotorSequenceAbdomen = new MotorSequence();
-        //MotorSequenceBust = new MotorSequence();
-        //MotorSequenceLeftArm = new MotorSequence();
-        //MotorSequenceLeftLeg = new MotorSequence();
-        //MotorSequenceRightArm = new MotorSequence();
-        //MotorSequenceRightLeg = new MotorSequence();
+        MotorSequenceAbdomen = new MotorSequence();
+        MotorSequenceBust = new MotorSequence();
+        MotorSequenceLeftArm = new MotorSequence();
+        MotorSequenceLeftLeg = new MotorSequence();
+        MotorSequenceRightArm = new MotorSequence();
+        MotorSequenceRightLeg = new MotorSequence();
         Console.WriteLine(MotorFunctions.InitializeDynamixelMotors());
         MotorsInitialized = MotorFunctions.DynamixelMotorsInitialized;
         MotorFunctions.CollateMotorArray();
@@ -34,6 +212,8 @@ class PoseReader
         else Logging.WriteLog("Cannot create connection objects.", Logging.LogType.Error, Logging.LogCaller.MotorControl);
 
         Console.WriteLine("Hold the robot in the desired pose for motor capture, then press Enter...");
+        Console.WriteLine("For reference: Limbic areas are: Abdomen, Bust, Head, LeftArm, RightArm, LeftLeg, RightLeg.");
+        Console.WriteLine("The current Limbic areas of LeftLeg and RightLeg include the respective pelvis motors, given the 'average walking' model.");
         Console.ReadLine(); // Wait for you to position it.
 
         // Read and display current positions.
@@ -49,72 +229,78 @@ class PoseReader
         }
         tableAll.Write();
         Console.WriteLine();
-        Logging.WriteLog(tableAll.ToString(), Logging.LogType.Data, Logging.LogCaller.JoiPose, "all-demm");
-        //// Abdomen.
-        //var abdomen = MotorSequenceAbdomen.ReturnDictionaryOfPositions(Limbic.Abdomen);
-        //var tableAbdomen = new ConsoleTable("abdomen", "position");
-        //foreach (var kvpa in abdomen)
-        //{
-        //    tableAbdomen.AddRow(kvpa.Key, kvpa.Value);
-        //}
-        //tableAbdomen.Write();
-        //Console.WriteLine();
-        //Logging.WriteLog(tableAbdomen.ToString(), Logging.LogType.Data, Logging.LogCaller.JoiPose);
-        //// Bust.
-        //var bust = MotorSequenceBust.ReturnDictionaryOfPositions(Limbic.Bust);
-        //var tableBust = new ConsoleTable("bust", "position");
-        //foreach (var kvpb in bust)
-        //{
-        //    tableBust.AddRow(kvpb.Key, kvpb.Value);
-        //}
-        //tableBust.Write();
-        //Console.WriteLine();
-        //Logging.WriteLog(tableBust.ToString(), Logging.LogType.Data, Logging.LogCaller.JoiPose);
-        //// Left arm.
-        //var leftArm = MotorSequenceLeftArm.ReturnDictionaryOfPositions(Limbic.LeftArm);
-        //var tableLeftArm = new ConsoleTable("leftarm", "position");
-        //foreach (var kvpla in leftArm)
-        //{
-        //    tableLeftArm.AddRow(kvpla.Key, kvpla.Value);
-        //}
-        //tableLeftArm.Write();
-        //Console.WriteLine();
-        //Logging.WriteLog(tableLeftArm.ToString(), Logging.LogType.Data, Logging.LogCaller.JoiPose);
-        //// Left leg.
-        //var leftLeg = MotorSequenceLeftLeg.ReturnDictionaryOfPositions(Limbic.LeftLeg);
-        //var tableLeftLeg = new ConsoleTable("leftleg", "position");
-        //foreach (var kvpl in leftLeg)
-        //{
-        //    tableLeftLeg.AddRow(kvpl.Key, kvpl.Value);
-        //}
-        //tableLeftLeg.Write();
-        //Console.WriteLine();
-        //Logging.WriteLog(tableLeftLeg.ToString(), Logging.LogType.Data, Logging.LogCaller.JoiPose);
-        //// Right arm.
-        //var rightArm = MotorSequenceRightArm.ReturnDictionaryOfPositions(Limbic.RightArm);
-        //var tablerightArm = new ConsoleTable("rightarm", "position");
-        //foreach (var kvpr in rightArm)
-        //{
-        //    tablerightArm.AddRow(kvpr.Key, kvpr.Value);
-        //}
-        //tablerightArm.Write();
-        //Console.WriteLine();
-        //Logging.WriteLog(tablerightArm.ToString(), Logging.LogType.Data, Logging.LogCaller.JoiPose);
-        //// Right leg.
-        //var rightLeg = MotorSequenceRightLeg.ReturnDictionaryOfPositions(Limbic.RightLeg);
-        //var tablerightLeg = new ConsoleTable("rightleg", "position");
-        //foreach (var kvpr in rightLeg)
-        //{
-        //    tablerightLeg.AddRow(kvpr.Key, kvpr.Value);
-        //}
-        //tablerightLeg.Write();
-        //Console.WriteLine();
-        //Logging.WriteLog(tablerightLeg.ToString(), Logging.LogType.Data, Logging.LogCaller.JoiPose);
-
-        Console.WriteLine("If wanting to rescan, type 'do', otherwise Enter to exit.");
+        Logging.WriteLog(tableAll.ToString(), Logging.LogType.Data, Logging.LogCaller.JoiPose, OutputFileName);
+ 
+        Console.WriteLine("If wanting to rescan of everything, type 'do'.");
+        Console.WriteLine("If wanting to recan just a specific limbic region, type 'scan' and one of the supported areas: Abdomen, Bust, LeftArm, RightArm, LeftLeg, RightLeg.");
+        Console.WriteLine("If wanting to set torque-freeze the pose, type 'freeze' and one of the supported areas: Abdomen, Bust, LeftArm, RightArm, LeftLeg, RightLeg.");
+        Console.WriteLine("If wanting to set torque-unfreeze to the pose-area, type 'unfreeze' and one of the supported areas: Abdomen, Bust, LeftArm, RightArm, LeftLeg, RightLeg.");
+        Console.WriteLine("Otherwise, hit Enter to exit.");
         var input = Console.ReadLine(); // Wait for you to view the position values.
         if (input == "do")
             goto repeat;
+        switch (input)
+        {
+            case "scan Abdomen":
+                await Scan(Limbic.LimbicArea.Abdomen);
+                break;
+            case "scan Bust":
+                await Scan(Limbic.LimbicArea.Bust);
+                break;
+            case "scan LeftArm":
+                await Scan(Limbic.LimbicArea.LeftArm);
+                break;
+            case "scan RightArm":
+                await Scan(Limbic.LimbicArea.RightArm);
+                break;
+            case "scan LeftLeg":
+                await Scan(Limbic.LimbicArea.LeftLeg);
+                break;
+            case "scan RightLeg":
+                await Scan(Limbic.LimbicArea.RightLeg);
+                break;
+            case "freeze Abdomen":
+                await Freeze(Limbic.LimbicArea.Abdomen);
+                break;
+            case "freeze Bust":
+                await Freeze(Limbic.LimbicArea.Bust);
+                break;
+            case "freeze LeftArm":
+                await Freeze(Limbic.LimbicArea.LeftArm);
+                break;
+            case "freeze RightArm":
+                await Freeze(Limbic.LimbicArea.RightArm);
+                break;
+            case "freeze LeftLeg":
+                await Freeze(Limbic.LimbicArea.LeftLeg);
+                break;
+            case "freeze RightLeg":
+                await Freeze(Limbic.LimbicArea.RightLeg);
+                break;
+            case "unfreeze Abdomen":
+                await Unfreeze(Limbic.LimbicArea.Abdomen);
+                break;
+            case "unfreeze Bust":
+                await Unfreeze(Limbic.LimbicArea.Bust);
+                break;
+            case "unfreeze LeftArm":
+                await Unfreeze(Limbic.LimbicArea.LeftArm);
+                break;
+            case "unfreeze RightArm":
+                await Unfreeze(Limbic.LimbicArea.RightArm);
+                break;
+            case "unfreeze LeftLeg":
+                await Unfreeze(Limbic.LimbicArea.LeftLeg);
+                break;
+            case "unfreeze RightLeg":
+                await Unfreeze(Limbic.LimbicArea.RightLeg);
+                break;
+
+            default:
+                break;
+        }
+
+            
 
         // Dispose resources.
         MotorFunctions.DisposeDynamixelMotors();
