@@ -7,7 +7,6 @@ using ConsoleTables;
 #if windows
 using System.Speech.Recognition;
 using System.Speech.Synthesis;
-using System.Threading.Tasks;
 #endif
 
 class PoseReader
