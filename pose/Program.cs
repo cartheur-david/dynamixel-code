@@ -20,8 +20,8 @@ class PoseReader
 
     static async Task LoadSettings()
     {
-        // Try a default setup using the Settings.xml file.
-        string path = Path.Combine(Environment.CurrentDirectory, Path.Combine("config", "Settings.xml"));
+        // Load settings from XML file.
+        var path = Path.Combine(Environment.CurrentDirectory, Path.Combine("config", "Settings.xml"));
         GlobalSettings.LoadSettings(path);
         await Task.CompletedTask;
     }
