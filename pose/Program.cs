@@ -20,7 +20,6 @@ class PoseReader
 
     static async Task LoadSettings()
     {
-        // Load settings from XML file.
         var path = Path.Combine(Environment.CurrentDirectory, Path.Combine("config", "Settings.xml"));
         GlobalSettings.LoadSettings(path);
         await Task.CompletedTask;
@@ -214,13 +213,10 @@ class PoseReader
         Console.WriteLine("Hold the robot in the desired pose for motor capture, then press Enter...");
         Console.WriteLine("For reference: Limbic areas are: Abdomen, Bust, Head, LeftArm, RightArm, LeftLeg, RightLeg.");
         Console.WriteLine("The current Limbic areas of LeftLeg and RightLeg include the respective pelvis motors, given the 'average walking' model.");
-        Console.ReadLine(); // Wait for you to position it.
-
-        // Read and display current positions.
-        Console.WriteLine("\nSitting pose:" + Environment.NewLine);
-        Logging.WriteLog("Sitting pose:" + Environment.NewLine, Logging.LogType.Data, Logging.LogCaller.JoiPose);
+        Console.ReadLine();
+        Console.WriteLine("Capturing pose..." + Environment.NewLine);
+        Logging.WriteLog("Captured pose:" + Environment.NewLine, Logging.LogType.Data, Logging.LogCaller.JoiPose);
     repeat:
-        // All.
         var all = MotorSequenceAll.ReturnDictionaryOfPositions(Limbic.All);
         var tableAll = new ConsoleTable("motor", "position");
         foreach (var kvp in all)
@@ -236,7 +232,7 @@ class PoseReader
         Console.WriteLine("If wanting to set torque-freeze the pose, type 'freeze' and one of the supported areas: Abdomen, Bust, LeftArm, RightArm, LeftLeg, RightLeg.");
         Console.WriteLine("If wanting to set torque-unfreeze to the pose-area, type 'unfreeze' and one of the supported areas: Abdomen, Bust, LeftArm, RightArm, LeftLeg, RightLeg.");
         Console.WriteLine("Otherwise, hit Enter to exit.");
-        var input = Console.ReadLine(); // Wait for you to view the position values.
+        var input = Console.ReadLine();
         if (input == "do")
             goto repeat;
         switch (input)
@@ -299,10 +295,8 @@ class PoseReader
             default:
                 break;
         }
-
-            
-
-        // Dispose resources.
+        Console.WriteLine("Pose capture complete.");
+        Console.WriteLine("Disposing motors...");
         MotorFunctions.DisposeDynamixelMotors();
 
         await Task.CompletedTask;
