@@ -9,3 +9,4 @@ Joi standing and walking
 	1158: Done. Added settings feature from haden.
 	1207: Cleaned the code and have 300-lines of focused-joi.
 	1214: Now to add the voice-control interface. Since: How can I set the positions when both hands will be required? Sure, locked into windoze, but this is a calibratino program after all.
+	1256: Gotten as far as I can. Next session!
