@@ -4,3 +4,6 @@ Joi standing and walking
 09.04.2025
 	1728: The code is correct, lean and mean.
 	1915: Learned that my code is more intuitive than one thinks. Suprises are good for the spirit.
+10.04.2025
+	1052: Now that we are closer to actually using the code, adding a torque-freeze and unfreeze from console would be helpful to lock and record positions. I suspect the next problem will be refining the pose and only unfreezing limbic areas or individual joints for precision.
+	1158: Done. Added settings feature from haden.
