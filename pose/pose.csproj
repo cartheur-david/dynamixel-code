@@ -20,6 +20,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="config\Settings.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="lib\dxl_x64_c.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -36,6 +39,10 @@
 
   <ItemGroup>
     <PackageReference Include="ConsoleTables" Version="2.4.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="config\" />
   </ItemGroup>
 
 </Project>
