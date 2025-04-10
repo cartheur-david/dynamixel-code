@@ -1,13 +1,20 @@
 ﻿//
 // This autonomous intelligent system software is the property of Cartheur Research B.V. Copyright 2021 - 2025, all rights reserved.
 //
+#define windows
 using Cartheur.Animals.Robot;
 using ConsoleTables;
+#if windows
+using System.Speech.Recognition;
+using System.Speech.Synthesis;
+using System.Threading.Tasks;
+#endif
 
 class PoseReader
 {
     public static SettingsDictionary GlobalSettings { get; set; }
     public static string OutputFileName { get; set; }
+    public static bool UseVoiceControl { get; set; }
     public static MotorFunctions MotorControl { get; set; }
     public static MotorSequence MotorSequenceAll { get; set; }
     public static MotorSequence MotorSequenceAbdomen { get; set; }
@@ -17,6 +24,13 @@ class PoseReader
     public static MotorSequence MotorSequenceRightArm { get; set; }
     public static MotorSequence MotorSequenceRightLeg { get; set; }
     public static bool MotorsInitialized { get; set; }
+
+#if windows
+    static readonly SpeechRecognitionEngine Recognizer = new SpeechRecognitionEngine();
+    static readonly GrammarBuilder GrammarBuilder = new GrammarBuilder();
+    static readonly SpeechSynthesizer SpeechSynth = new SpeechSynthesizer();
+    static readonly PromptBuilder PromptBuilder = new PromptBuilder();
+#endif
 
     static async Task LoadSettings()
     {
@@ -132,7 +146,7 @@ class PoseReader
                 Logging.WriteLog(tableBust.ToString(), Logging.LogType.Data, Logging.LogCaller.JoiPose);
                 break;
             case Limbic.LimbicArea.Head:
-                
+
                 break;
             case Limbic.LimbicArea.LeftArm:
                 var leftArm = MotorSequenceLeftArm.ReturnDictionaryOfPositions(Limbic.LeftArm);
@@ -190,11 +204,69 @@ class PoseReader
         await Task.CompletedTask;
     }
 
+    static async Task InitializeSapi()
+    {
+        GrammarBuilder.Culture = Recognizer.RecognizerInfo.Culture;
+        try
+        {
+            Choices choices = new Choices();
+            //GlobalSettings.GrabSetting("voicegrammar");
+            choices.Add(new string[] { "do", "scan Abdomen", "scan Bust", "scan LeftArm", "scan RightArm", "scan LeftLeg", "scan RightLeg", "freeze Abdomen", "freeze Bust", "freeze LeftArm", "freeze RightArm", "freeze LeftLeg", "freeze RightLeg", "unfreeze Abdomen", "unfreeze Bust", "unfreeze LeftArm", "unfreeze RightArm", "unfreeze LeftLeg", "unfreeze RightLeg" });
+
+            GrammarBuilder.Append(choices);
+
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+        var grammar = new Grammar(GrammarBuilder);
+        try
+        {
+            Recognizer.UnloadAllGrammars();
+            Recognizer.RecognizeAsyncCancel();
+            Recognizer.RequestRecognizerUpdate();
+            Recognizer.LoadGrammar(grammar);
+            Recognizer.SpeechRecognized += SapiWindowsSpeechRecognized;
+            Recognizer.SetInputToDefaultAudioDevice();
+            Recognizer.RecognizeAsync(RecognizeMode.Multiple);
+            Logging.WriteLog("Windows SAPI: Recognizer initialized.", Logging.LogType.Information, Logging.LogCaller.JoiPose);
+            Console.WriteLine("Windows SAPI: Recognizer initialized.");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("An error has occurred in the recognizer. " + ex.Message);
+            Logging.WriteLog(ex.Message, Logging.LogType.Error, Logging.LogCaller.JoiPose);
+        }
+        finally
+        {
+            await SpeakText("Ready to do pose engineering!");
+        }
+        await Task.CompletedTask;
+    }
+
+    static async Task SpeakText(string input)
+    {
+        try
+        {
+            PromptBuilder.ClearContent();
+            PromptBuilder.AppendText(input);
+            SpeechSynth.SelectVoiceByHints(VoiceGender.Female, VoiceAge.Adult);
+            SpeechSynth.Speak(PromptBuilder);
+        }
+        catch (Exception ex)
+        {
+            Logging.WriteLog(ex.Message, Logging.LogType.Error, Logging.LogCaller.JoiPose);
+        }
+        await Task.CompletedTask;
+    }
+
     static async Task Main()
     {
         GlobalSettings = new SettingsDictionary();
         await LoadSettings();
         OutputFileName = GlobalSettings.GrabSetting("outputfile");
+        UseVoiceControl = Convert.ToBoolean(GlobalSettings.GrabSetting("voicecontrol"));
         MotorControl = new MotorFunctions();
         MotorSequenceAll = new MotorSequence();
         MotorSequenceAbdomen = new MotorSequence();
@@ -209,96 +281,184 @@ class PoseReader
 
         if (MotorsInitialized) { MotorControl.CreateConnectMotorObjects(); }
         else Logging.WriteLog("Cannot create connection objects.", Logging.LogType.Error, Logging.LogCaller.MotorControl);
-        
-        // Program help.
-        Console.WriteLine("Hold the robot in the desired pose for motor capture, then press Enter...");
-        Console.WriteLine("For reference: Limbic areas are: Abdomen, Bust, Head, LeftArm, RightArm, LeftLeg, RightLeg.");
-        Console.WriteLine("The current Limbic areas of LeftLeg and RightLeg include the respective pelvis motors, given the 'average walking' model.");
-        Console.ReadLine();
-        Console.WriteLine("Capturing pose..." + Environment.NewLine);
-        Logging.WriteLog("Captured pose:" + Environment.NewLine, Logging.LogType.Data, Logging.LogCaller.JoiPose);
-    repeat:
-        var all = MotorSequenceAll.ReturnDictionaryOfPositions(Limbic.All);
-        var tableAll = new ConsoleTable("motor", "position");
-        foreach (var kvp in all)
-        {
-            tableAll.AddRow(kvp.Key, kvp.Value);
-        }
-        tableAll.Write();
-        Console.WriteLine();
-        Logging.WriteLog(tableAll.ToString(), Logging.LogType.Data, Logging.LogCaller.JoiPose, OutputFileName);
-        // Program help.
-        Console.WriteLine("If wanting to rescan of everything, type 'do'.");
-        Console.WriteLine("If wanting to rescan just a specific limbic region, type 'scan' and one of the supported areas: Abdomen, Bust, LeftArm, RightArm, LeftLeg, RightLeg.");
-        Console.WriteLine("If wanting to freeze the pose-area, type 'freeze' and one of the supported areas: Abdomen, Bust, LeftArm, RightArm, LeftLeg, RightLeg.");
-        Console.WriteLine("If wanting to unfreeze the pose-area, type 'unfreeze' and one of the supported areas: Abdomen, Bust, LeftArm, RightArm, LeftLeg, RightLeg.");
-        Console.WriteLine("Otherwise, hit Enter to exit.");
 
-        var input = Console.ReadLine();
-        if (input == "do")
-            goto repeat;
-        switch (input)
+        if (UseVoiceControl)
         {
+            await InitializeSapi();
+            await SpeakText("Hold the robot in the desired pose for motor capture, then tell me what you would like to do.");
+        }
+        if (!UseVoiceControl)
+        {
+            // Program help.
+            Console.WriteLine("Hold the robot in the desired pose for motor capture, then press Enter...");
+            Console.WriteLine("For reference: Limbic areas are: Abdomen, Bust, Head, LeftArm, RightArm, LeftLeg, RightLeg.");
+            Console.WriteLine("The current Limbic areas of LeftLeg and RightLeg include the respective pelvis motors, given the 'average walking' model.");
+            Console.ReadLine();
+            Console.WriteLine("Capturing pose..." + Environment.NewLine);
+            Logging.WriteLog("Captured pose:" + Environment.NewLine, Logging.LogType.Data, Logging.LogCaller.JoiPose);
+        repeat:
+            var all = MotorSequenceAll.ReturnDictionaryOfPositions(Limbic.All);
+            var tableAll = new ConsoleTable("motor", "position");
+            foreach (var kvp in all)
+            {
+                tableAll.AddRow(kvp.Key, kvp.Value);
+            }
+            tableAll.Write();
+            Console.WriteLine();
+            Logging.WriteLog(tableAll.ToString(), Logging.LogType.Data, Logging.LogCaller.JoiPose, OutputFileName);
+            // Program help.
+            Console.WriteLine("If wanting to rescan of everything, type 'do'.");
+            Console.WriteLine("If wanting to rescan just a specific limbic region, type 'scan' and one of the supported areas: Abdomen, Bust, LeftArm, RightArm, LeftLeg, RightLeg.");
+            Console.WriteLine("If wanting to freeze the pose-area, type 'freeze' and one of the supported areas: Abdomen, Bust, LeftArm, RightArm, LeftLeg, RightLeg.");
+            Console.WriteLine("If wanting to unfreeze the pose-area, type 'unfreeze' and one of the supported areas: Abdomen, Bust, LeftArm, RightArm, LeftLeg, RightLeg.");
+            Console.WriteLine("Otherwise, hit Enter to exit.");
+
+            var input = Console.ReadLine();
+            if (input == "do")
+                goto repeat;
+            switch (input)
+            {
+                case "scan Abdomen":
+                    await Scan(Limbic.LimbicArea.Abdomen);
+                    break;
+                case "scan Bust":
+                    await Scan(Limbic.LimbicArea.Bust);
+                    break;
+                case "scan LeftArm":
+                    await Scan(Limbic.LimbicArea.LeftArm);
+                    break;
+                case "scan RightArm":
+                    await Scan(Limbic.LimbicArea.RightArm);
+                    break;
+                case "scan LeftLeg":
+                    await Scan(Limbic.LimbicArea.LeftLeg);
+                    break;
+                case "scan RightLeg":
+                    await Scan(Limbic.LimbicArea.RightLeg);
+                    break;
+                case "freeze Abdomen":
+                    await Freeze(Limbic.LimbicArea.Abdomen);
+                    break;
+                case "freeze Bust":
+                    await Freeze(Limbic.LimbicArea.Bust);
+                    break;
+                case "freeze LeftArm":
+                    await Freeze(Limbic.LimbicArea.LeftArm);
+                    break;
+                case "freeze RightArm":
+                    await Freeze(Limbic.LimbicArea.RightArm);
+                    break;
+                case "freeze LeftLeg":
+                    await Freeze(Limbic.LimbicArea.LeftLeg);
+                    break;
+                case "freeze RightLeg":
+                    await Freeze(Limbic.LimbicArea.RightLeg);
+                    break;
+                case "unfreeze Abdomen":
+                    await Unfreeze(Limbic.LimbicArea.Abdomen);
+                    break;
+                case "unfreeze Bust":
+                    await Unfreeze(Limbic.LimbicArea.Bust);
+                    break;
+                case "unfreeze LeftArm":
+                    await Unfreeze(Limbic.LimbicArea.LeftArm);
+                    break;
+                case "unfreeze RightArm":
+                    await Unfreeze(Limbic.LimbicArea.RightArm);
+                    break;
+                case "unfreeze LeftLeg":
+                    await Unfreeze(Limbic.LimbicArea.LeftLeg);
+                    break;
+                case "unfreeze RightLeg":
+                    await Unfreeze(Limbic.LimbicArea.RightLeg);
+                    break;
+                default:
+                    break;
+            }
+            Console.WriteLine("Pose capture complete.");
+            Console.WriteLine("Disposing motors...");
+        }
+        
+        MotorFunctions.DisposeDynamixelMotors();
+        await Task.CompletedTask;
+    }
+
+    static async Task SapiWindowsSpeechRecognized(object sender, SpeechRecognizedEventArgs e)
+    {
+        switch (e.Result.Text)
+        {
+            case "do":
+                break;
             case "scan Abdomen":
-                await Scan(Limbic.LimbicArea.Abdomen);
+                Scan(Limbic.LimbicArea.Abdomen);
+                await SpeakText("Abdomen area scanned.");
                 break;
             case "scan Bust":
-                await Scan(Limbic.LimbicArea.Bust);
+                Scan(Limbic.LimbicArea.Bust);
+                await SpeakText("Bust area scanned.");
                 break;
             case "scan LeftArm":
-                await Scan(Limbic.LimbicArea.LeftArm);
+                Scan(Limbic.LimbicArea.LeftArm);
+                await SpeakText("Left arm area scanned.");
                 break;
             case "scan RightArm":
-                await Scan(Limbic.LimbicArea.RightArm);
+                Scan(Limbic.LimbicArea.RightArm);
+                await SpeakText("Right arm area scanned.");
                 break;
             case "scan LeftLeg":
-                await Scan(Limbic.LimbicArea.LeftLeg);
+                Scan(Limbic.LimbicArea.LeftLeg);
+                await SpeakText("Left leg area scanned.");
                 break;
             case "scan RightLeg":
-                await Scan(Limbic.LimbicArea.RightLeg);
+                Scan(Limbic.LimbicArea.RightLeg);
+                await SpeakText("Right leg area scanned.");
                 break;
             case "freeze Abdomen":
-                await Freeze(Limbic.LimbicArea.Abdomen);
+                Freeze(Limbic.LimbicArea.Abdomen);
+                await SpeakText("I have frozen the Abdomen area.");
                 break;
             case "freeze Bust":
-                await Freeze(Limbic.LimbicArea.Bust);
+                Freeze(Limbic.LimbicArea.Bust);
+                await SpeakText("I have frozen the Bust area.");
                 break;
             case "freeze LeftArm":
-                await Freeze(Limbic.LimbicArea.LeftArm);
+                Freeze(Limbic.LimbicArea.LeftArm);
+                await SpeakText("I have frozen the left arm area.");
                 break;
             case "freeze RightArm":
-                await Freeze(Limbic.LimbicArea.RightArm);
+                Freeze(Limbic.LimbicArea.RightArm);
+                await SpeakText("I have frozen the right arm area.");
                 break;
             case "freeze LeftLeg":
-                await Freeze(Limbic.LimbicArea.LeftLeg);
+                Freeze(Limbic.LimbicArea.LeftLeg);
+                await SpeakText("I have frozen the left leg area.");
                 break;
             case "freeze RightLeg":
-                await Freeze(Limbic.LimbicArea.RightLeg);
+                Freeze(Limbic.LimbicArea.RightLeg);
+                await SpeakText("I have frozen the right leg area.");
                 break;
             case "unfreeze Abdomen":
-                await Unfreeze(Limbic.LimbicArea.Abdomen);
+                Unfreeze(Limbic.LimbicArea.Abdomen);
                 break;
             case "unfreeze Bust":
-                await Unfreeze(Limbic.LimbicArea.Bust);
+                Unfreeze(Limbic.LimbicArea.Bust);
                 break;
             case "unfreeze LeftArm":
-                await Unfreeze(Limbic.LimbicArea.LeftArm);
+                Unfreeze(Limbic.LimbicArea.LeftArm);
                 break;
             case "unfreeze RightArm":
-                await Unfreeze(Limbic.LimbicArea.RightArm);
+                Unfreeze(Limbic.LimbicArea.RightArm);
                 break;
             case "unfreeze LeftLeg":
-                await Unfreeze(Limbic.LimbicArea.LeftLeg);
+                Unfreeze(Limbic.LimbicArea.LeftLeg);
                 break;
             case "unfreeze RightLeg":
-                await Unfreeze(Limbic.LimbicArea.RightLeg);
+                Unfreeze(Limbic.LimbicArea.RightLeg);
                 break;
+
             default:
                 break;
         }
-        Console.WriteLine("Pose capture complete.");
-        Console.WriteLine("Disposing motors...");
-        MotorFunctions.DisposeDynamixelMotors();
-        await Task.CompletedTask;
+
     }
 }
