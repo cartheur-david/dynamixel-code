@@ -232,8 +232,9 @@ class PoseReader
             Recognizer.RecognizeAsync(RecognizeMode.Multiple);
             Logging.WriteLog("Windows SAPI: Recognizer initialized.", Logging.LogType.Information, Logging.LogCaller.JoiPose);
             Console.WriteLine("Windows SAPI: Recognizer initialized.");
-            Console.WriteLine("For help, speak the phrase: \"give me a list of what I can do\"");
-            Console.WriteLine("To get a list of supported area operations, speak the phrase: \"what are the areas of the robot\"");
+            Console.WriteLine("For help, speak the phrase: \"give me a list of what I can do\".");
+            Console.WriteLine("To get a list of supported area operations, speak the phrase: \"what are the areas of the robot\".");
+            Console.WriteLine("Speak the phrase: \"program quit\" to exit the application.");
         }
         catch (Exception ex)
         {
@@ -492,6 +493,12 @@ class PoseReader
             case "what are the areas of the robot":
                 Console.WriteLine("The supported areas are the abdomen, bust, left arm, right arm, left leg, and right leg on the joi robot.");
                 SpeakText("The supported areas are the abdomen, bust, left arm, right arm, left leg, and right leg on the joi robot.");
+                break;
+            case "program quit":
+                Console.WriteLine("Detected quit. Closing the application.");
+                SpeakText("Detected quit. Closing the application.");
+                MotorFunctions.DisposeDynamixelMotors();
+                Environment.Exit(0);
                 break;
             default:
                 break;
