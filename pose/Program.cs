@@ -123,6 +123,17 @@ class PoseReader
     {
         switch (area)
         {
+            case Limbic.LimbicArea.All:
+                var all = MotorSequenceAll.ReturnDictionaryOfPositions(Limbic.All);
+                var tableAll = new ConsoleTable("motor", "position");
+                foreach (var kvp in all)
+                {
+                    tableAll.AddRow(kvp.Key, kvp.Value);
+                }
+                tableAll.Write();
+                Console.WriteLine();
+                Logging.WriteLog(tableAll.ToString(), Logging.LogType.Data, Logging.LogCaller.JoiPose, OutputFileName);
+                break;
             case Limbic.LimbicArea.Abdomen:
                 var abdomen = MotorSequenceAbdomen.ReturnDictionaryOfPositions(Limbic.Abdomen);
                 var tableAbdomen = new ConsoleTable("abdomen", "position");
@@ -211,7 +222,7 @@ class PoseReader
         {
             Choices choices = new Choices();
             //GlobalSettings.GrabSetting("voicegrammar");
-            choices.Add(new string[] { "do", "scan Abdomen", "scan Bust", "scan LeftArm", "scan RightArm", "scan LeftLeg", "scan RightLeg", "freeze Abdomen", "freeze Bust", "freeze LeftArm", "freeze RightArm", "freeze LeftLeg", "freeze RightLeg", "unfreeze Abdomen", "unfreeze Bust", "unfreeze LeftArm", "unfreeze RightArm", "unfreeze LeftLeg", "unfreeze RightLeg", "program quit", "give me a list of what I can do", "what are the areas of the robot" });
+            choices.Add(new string[] { "do", "scan all", "scan Abdomen", "scan Bust", "scan LeftArm", "scan RightArm", "scan LeftLeg", "scan RightLeg", "freeze all", "freeze Abdomen", "freeze Bust", "freeze LeftArm", "freeze RightArm", "freeze LeftLeg", "freeze RightLeg", "unfreeze all", "unfreeze Abdomen", "unfreeze Bust", "unfreeze LeftArm", "unfreeze RightArm", "unfreeze LeftLeg", "unfreeze RightLeg", "program quit", "give me a list of what I can do", "what are the areas of the robot" });
 
             GrammarBuilder.Append(choices);
 
@@ -401,6 +412,11 @@ class PoseReader
         switch (e.Result.Text)
         {
             case "do":
+                
+                break;
+            case "scan all":
+                Scan(Limbic.LimbicArea.All);
+                SpeakText("Scanning all limbic areas.");
                 break;
             case "scan Abdomen":
                 Scan(Limbic.LimbicArea.Abdomen);
@@ -425,6 +441,11 @@ class PoseReader
             case "scan RightLeg":
                 Scan(Limbic.LimbicArea.RightLeg);
                 SpeakText("Right leg scanned.");
+                break;
+            case "freeze all":
+                Freeze(Limbic.LimbicArea.All);
+                Console.WriteLine("All motors frozen");
+                SpeakText("I have frozen all motors.");
                 break;
             case "freeze Abdomen":
                 Freeze(Limbic.LimbicArea.Abdomen);
@@ -455,6 +476,11 @@ class PoseReader
                 Freeze(Limbic.LimbicArea.RightLeg);
                 Console.WriteLine("Right leg frozen");
                 SpeakText("I have frozen the right leg.");
+                break;
+            case "unfreeze all":
+                Unfreeze(Limbic.LimbicArea.All);
+                Console.WriteLine("All motors unfrozen");
+                SpeakText("I have unfrozen all motors.");
                 break;
             case "unfreeze Abdomen":
                 Unfreeze(Limbic.LimbicArea.Abdomen);
