@@ -211,7 +211,7 @@ class PoseReader
         {
             Choices choices = new Choices();
             //GlobalSettings.GrabSetting("voicegrammar");
-            choices.Add(new string[] { "do", "scan Abdomen", "scan Bust", "scan LeftArm", "scan RightArm", "scan LeftLeg", "scan RightLeg", "freeze Abdomen", "freeze Bust", "freeze LeftArm", "freeze RightArm", "freeze LeftLeg", "freeze RightLeg", "unfreeze Abdomen", "unfreeze Bust", "unfreeze LeftArm", "unfreeze RightArm", "unfreeze LeftLeg", "unfreeze RightLeg", "program quit", "give me a list of what I can do" });
+            choices.Add(new string[] { "do", "scan Abdomen", "scan Bust", "scan LeftArm", "scan RightArm", "scan LeftLeg", "scan RightLeg", "freeze Abdomen", "freeze Bust", "freeze LeftArm", "freeze RightArm", "freeze LeftLeg", "freeze RightLeg", "unfreeze Abdomen", "unfreeze Bust", "unfreeze LeftArm", "unfreeze RightArm", "unfreeze LeftLeg", "unfreeze RightLeg", "program quit", "give me a list of what I can do", "what are the areas of the robot" });
 
             GrammarBuilder.Append(choices);
 
@@ -487,6 +487,10 @@ class PoseReader
             case "give me a list of what I can do":
                 Console.WriteLine("You can scan, freeze, or unfreeze the jointed areas of the joi robot.");
                 SpeakText("You can scan, freeze, or unfreeze the jointed areas of the joi robot.");
+                break;
+            case "what are the areas of the robot":
+                Console.WriteLine("The supported areas are the abdomen, bust, left arm, right arm, left leg, and right leg on the joi robot.");
+                SpeakText("The supported areas are the abdomen, bust, left arm, right arm, left leg, and right leg on the joi robot.");
                 break;
             default:
                 break;
