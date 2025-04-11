@@ -426,67 +426,67 @@ class PoseReader
                 break;
             case "freeze Abdomen":
                 Freeze(Limbic.LimbicArea.Abdomen);
-                SpeakText("I have frozen the Abdomen.");
                 Console.WriteLine("Abdomen frozen");
+                SpeakText("I have frozen the Abdomen.");
                 break;
             case "freeze Bust":
                 Freeze(Limbic.LimbicArea.Bust);
-                SpeakText("I have frozen the Bust.");
                 Console.WriteLine("Bust frozen");
+                SpeakText("I have frozen the Bust.");
                 break;
             case "freeze LeftArm":
                 Freeze(Limbic.LimbicArea.LeftArm);
-                SpeakText("I have frozen the left arm.");
                 Console.WriteLine("Left arm frozen");
+                SpeakText("I have frozen the left arm.");
                 break;
             case "freeze RightArm":
                 Freeze(Limbic.LimbicArea.RightArm);
-                SpeakText("I have frozen the right arm.");
                 Console.WriteLine("Right arm frozen");
+                SpeakText("I have frozen the right arm.");
                 break;
             case "freeze LeftLeg":
                 Freeze(Limbic.LimbicArea.LeftLeg);
-                SpeakText("I have frozen the left leg.");
                 Console.WriteLine("Left leg frozen");
+                SpeakText("I have frozen the left leg.");
                 break;
             case "freeze RightLeg":
                 Freeze(Limbic.LimbicArea.RightLeg);
-                SpeakText("I have frozen the right leg.");
                 Console.WriteLine("Right leg frozen");
+                SpeakText("I have frozen the right leg.");
                 break;
             case "unfreeze Abdomen":
                 Unfreeze(Limbic.LimbicArea.Abdomen);
-                SpeakText("I have unfrozen the abdomen.");
                 Console.WriteLine("Abdomen unfrozen");
+                SpeakText("I have unfrozen the abdomen.");
                 break;
             case "unfreeze Bust":
                 Unfreeze(Limbic.LimbicArea.Bust);
-                SpeakText("I have unfrozen the bust.");
                 Console.WriteLine("Bust unfrozen");
+                SpeakText("I have unfrozen the bust.");
                 break;
             case "unfreeze LeftArm":
                 Unfreeze(Limbic.LimbicArea.LeftArm);
-                SpeakText("I have unfrozen the left arm.");
                 Console.WriteLine("Left arm unfrozen");
+                SpeakText("I have unfrozen the left arm.");
                 break;
             case "unfreeze RightArm":
                 Unfreeze(Limbic.LimbicArea.RightArm);
-                SpeakText("I have unfrozen the right arm.");
                 Console.WriteLine("Right arm unfrozen");
+                SpeakText("I have unfrozen the right arm.");
                 break;
             case "unfreeze LeftLeg":
                 Unfreeze(Limbic.LimbicArea.LeftLeg);
-                SpeakText("I have unfrozen the left leg.");
                 Console.WriteLine("Left leg unfrozen");
+                SpeakText("I have unfrozen the left leg.");
                 break;
             case "unfreeze RightLeg":
                 Unfreeze(Limbic.LimbicArea.RightLeg);
-                SpeakText("I have unfrozen the right leg.");
                 Console.WriteLine("Right leg unfrozen");
+                SpeakText("I have unfrozen the right leg.");
                 break;
             case "give me a list of what I can do":
-                SpeakText("You can scan, freeze, or unfreeze the jointed areas of the joi robot.");
                 Console.WriteLine("You can scan, freeze, or unfreeze the jointed areas of the joi robot.");
+                SpeakText("You can scan, freeze, or unfreeze the jointed areas of the joi robot.");
                 break;
             default:
                 break;
