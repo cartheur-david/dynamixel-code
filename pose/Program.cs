@@ -233,6 +233,7 @@ class PoseReader
             Logging.WriteLog("Windows SAPI: Recognizer initialized.", Logging.LogType.Information, Logging.LogCaller.JoiPose);
             Console.WriteLine("Windows SAPI: Recognizer initialized.");
             Console.WriteLine("For help, speak the phrase: \"give me a list of what I can do\"");
+            Console.WriteLine("To get a list of supported area operations, speak the phrase: \"what are the areas of the robot\"");
         }
         catch (Exception ex)
         {
