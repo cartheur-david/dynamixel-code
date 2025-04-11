@@ -486,11 +486,11 @@ class PoseReader
                 break;
             case "give me a list of what I can do":
                 SpeakText("You can scan, freeze, or unfreeze the jointed areas of the joi robot.");
+                Console.WriteLine("You can scan, freeze, or unfreeze the jointed areas of the joi robot.");
                 break;
             default:
                 break;
         }
-
     }
 #endif
 }
