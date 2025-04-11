@@ -400,5 +400,4 @@ FodyWeavers.xsd
 pose/logs/log.txt
 /sdk/Dynamixel.cs
 .vscode/launch.json
-.gitignore
 .vscode/tasks.json
