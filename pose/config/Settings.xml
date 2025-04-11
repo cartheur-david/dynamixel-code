@@ -2,5 +2,6 @@
 <root>
   <item name="outputfile" value="all-motors-in-pose"/>
   <item name="voicecontrol" value="true"/>
-  <item name="voicegrammar" value="do, scan, freeze, unfreeze"/>
+  <item name="voicegrammar" value="do, scan, freeze, unfreeze"/><!-- currently this is hardcoded into Program.cs -->
+  <item name="shadowdatabase" value="true"/>
 </root>
