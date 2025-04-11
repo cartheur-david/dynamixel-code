@@ -1,7 +1,7 @@
 ﻿//
 // This autonomous intelligent system software is the property of Cartheur Research B.V. Copyright 2021 - 2025, all rights reserved.
 //
-#define linux
+#define windows
 using Cartheur.Animals.Robot;
 using ConsoleTables;
 #if windows
@@ -14,6 +14,7 @@ class PoseReader
     public static SettingsDictionary GlobalSettings { get; set; }
     public static string OutputFileName { get; set; }
     public static bool UseVoiceControl { get; set; }
+    public static string UserInput { get; set; }
     public static MotorFunctions MotorControl { get; set; }
     public static MotorSequence MotorSequenceAll { get; set; }
     public static MotorSequence MotorSequenceAbdomen { get; set; }
@@ -210,7 +211,7 @@ class PoseReader
         {
             Choices choices = new Choices();
             //GlobalSettings.GrabSetting("voicegrammar");
-            choices.Add(new string[] { "do", "scan Abdomen", "scan Bust", "scan LeftArm", "scan RightArm", "scan LeftLeg", "scan RightLeg", "freeze Abdomen", "freeze Bust", "freeze LeftArm", "freeze RightArm", "freeze LeftLeg", "freeze RightLeg", "unfreeze Abdomen", "unfreeze Bust", "unfreeze LeftArm", "unfreeze RightArm", "unfreeze LeftLeg", "unfreeze RightLeg" });
+            choices.Add(new string[] { "do", "scan Abdomen", "scan Bust", "scan LeftArm", "scan RightArm", "scan LeftLeg", "scan RightLeg", "freeze Abdomen", "freeze Bust", "freeze LeftArm", "freeze RightArm", "freeze LeftLeg", "freeze RightLeg", "unfreeze Abdomen", "unfreeze Bust", "unfreeze LeftArm", "unfreeze RightArm", "unfreeze LeftLeg", "unfreeze RightLeg", "program quit", "give me a list of what I can do" });
 
             GrammarBuilder.Append(choices);
 
@@ -231,6 +232,7 @@ class PoseReader
             Recognizer.RecognizeAsync(RecognizeMode.Multiple);
             Logging.WriteLog("Windows SAPI: Recognizer initialized.", Logging.LogType.Information, Logging.LogCaller.JoiPose);
             Console.WriteLine("Windows SAPI: Recognizer initialized.");
+            Console.WriteLine("For help, speak the phrase: \"give me a list of what I can do\"");
         }
         catch (Exception ex)
         {
@@ -239,6 +241,7 @@ class PoseReader
         }
         finally
         {
+            Console.WriteLine("Ready for pose operations.");
             await SpeakText("Ready to do pose engineering!");
         }
         await Task.CompletedTask;
@@ -285,8 +288,15 @@ class PoseReader
         {
             #if windows
             await InitializeSapi();
-            await SpeakText("Hold the robot in the desired pose for motor capture, then tell me what you would like to do.");
-            #endif
+            await SpeakText("Hold the robot in the desired pose for joint capture, then tell me what you would like to do.");
+#endif
+            while (true)
+            {
+                UserInput = Console.ReadLine();
+                if (UserInput == "program quit")
+                    await SpeakText("Detected quit. Closing the application.");
+                break;
+            }
         }
         if (!UseVoiceControl)
         {
@@ -384,7 +394,7 @@ class PoseReader
         await Task.CompletedTask;
     }
 #if windows
-    static async Task SapiWindowsSpeechRecognized(object sender, SpeechRecognizedEventArgs e)
+    static void SapiWindowsSpeechRecognized(object sender, SpeechRecognizedEventArgs e)
     {
         switch (e.Result.Text)
         {
@@ -392,71 +402,91 @@ class PoseReader
                 break;
             case "scan Abdomen":
                 Scan(Limbic.LimbicArea.Abdomen);
-                await SpeakText("Abdomen area scanned.");
+                SpeakText("Abdomen scanned.");
                 break;
             case "scan Bust":
                 Scan(Limbic.LimbicArea.Bust);
-                await SpeakText("Bust area scanned.");
+                SpeakText("Bust scanned.");
                 break;
             case "scan LeftArm":
                 Scan(Limbic.LimbicArea.LeftArm);
-                await SpeakText("Left arm area scanned.");
+                SpeakText("Left arm scanned.");
                 break;
             case "scan RightArm":
                 Scan(Limbic.LimbicArea.RightArm);
-                await SpeakText("Right arm area scanned.");
+                SpeakText("Right arm scanned.");
                 break;
             case "scan LeftLeg":
                 Scan(Limbic.LimbicArea.LeftLeg);
-                await SpeakText("Left leg area scanned.");
+                SpeakText("Left leg scanned.");
                 break;
             case "scan RightLeg":
                 Scan(Limbic.LimbicArea.RightLeg);
-                await SpeakText("Right leg area scanned.");
+                SpeakText("Right leg scanned.");
                 break;
             case "freeze Abdomen":
                 Freeze(Limbic.LimbicArea.Abdomen);
-                await SpeakText("I have frozen the Abdomen area.");
+                SpeakText("I have frozen the Abdomen.");
+                Console.WriteLine("Abdomen frozen");
                 break;
             case "freeze Bust":
                 Freeze(Limbic.LimbicArea.Bust);
-                await SpeakText("I have frozen the Bust area.");
+                SpeakText("I have frozen the Bust.");
+                Console.WriteLine("Bust frozen");
                 break;
             case "freeze LeftArm":
                 Freeze(Limbic.LimbicArea.LeftArm);
-                await SpeakText("I have frozen the left arm area.");
+                SpeakText("I have frozen the left arm.");
+                Console.WriteLine("Left arm frozen");
                 break;
             case "freeze RightArm":
                 Freeze(Limbic.LimbicArea.RightArm);
-                await SpeakText("I have frozen the right arm area.");
+                SpeakText("I have frozen the right arm.");
+                Console.WriteLine("Right arm frozen");
                 break;
             case "freeze LeftLeg":
                 Freeze(Limbic.LimbicArea.LeftLeg);
-                await SpeakText("I have frozen the left leg area.");
+                SpeakText("I have frozen the left leg.");
+                Console.WriteLine("Left leg frozen");
                 break;
             case "freeze RightLeg":
                 Freeze(Limbic.LimbicArea.RightLeg);
-                await SpeakText("I have frozen the right leg area.");
+                SpeakText("I have frozen the right leg.");
+                Console.WriteLine("Right leg frozen");
                 break;
             case "unfreeze Abdomen":
                 Unfreeze(Limbic.LimbicArea.Abdomen);
+                SpeakText("I have unfrozen the abdomen.");
+                Console.WriteLine("Abdomen unfrozen");
                 break;
             case "unfreeze Bust":
                 Unfreeze(Limbic.LimbicArea.Bust);
+                SpeakText("I have unfrozen the bust.");
+                Console.WriteLine("Bust unfrozen");
                 break;
             case "unfreeze LeftArm":
                 Unfreeze(Limbic.LimbicArea.LeftArm);
+                SpeakText("I have unfrozen the left arm.");
+                Console.WriteLine("Left arm unfrozen");
                 break;
             case "unfreeze RightArm":
                 Unfreeze(Limbic.LimbicArea.RightArm);
+                SpeakText("I have unfrozen the right arm.");
+                Console.WriteLine("Right arm unfrozen");
                 break;
             case "unfreeze LeftLeg":
                 Unfreeze(Limbic.LimbicArea.LeftLeg);
+                SpeakText("I have unfrozen the left leg.");
+                Console.WriteLine("Left leg unfrozen");
                 break;
             case "unfreeze RightLeg":
                 Unfreeze(Limbic.LimbicArea.RightLeg);
+                SpeakText("I have unfrozen the right leg.");
+                Console.WriteLine("Right leg unfrozen");
                 break;
-
+            case "give me a list of what I can do":
+                SpeakText("You can scan, freeze, or unfreeze the jointed areas of the joi robot.");
+                break;
             default:
                 break;
         }
