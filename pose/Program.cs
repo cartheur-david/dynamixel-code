@@ -10,6 +10,8 @@ using System.Speech.Synthesis;
 using Microsoft.Data.Sqlite;
 #endif
 
+[System.Runtime.Versioning.SupportedOSPlatform("windows")]
+#pragma warning disable CS4014 
 class PoseReader
 {
     public static SettingsDictionary GlobalSettings { get; set; }
