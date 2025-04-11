@@ -7,6 +7,7 @@ using ConsoleTables;
 #if windows
 using System.Speech.Recognition;
 using System.Speech.Synthesis;
+using Microsoft.Data.Sqlite;
 #endif
 
 class PoseReader
@@ -14,6 +15,8 @@ class PoseReader
     public static SettingsDictionary GlobalSettings { get; set; }
     public static string OutputFileName { get; set; }
     public static bool UseVoiceControl { get; set; }
+    public static bool UseShadowDatabase { get; set; }
+    public static Dictionary<string, int> ShadowDictionary { get; set; }
     public static string UserInput { get; set; }
     public static MotorFunctions MotorControl { get; set; }
     public static MotorSequence MotorSequenceAll { get; set; }
@@ -141,8 +144,11 @@ class PoseReader
                 foreach (var kvp in all)
                 {
                     tableAll.AddRow(kvp.Key, kvp.Value);
+                    ShadowDictionary.Add(kvp.Key, kvp.Value);
                 }
                 tableAll.Write();
+                if (UseShadowDatabase)
+                    await Operations.StorePosition("Scan", ShadowDictionary);
                 Console.WriteLine();
                 Logging.WriteLog(tableAll.ToString(), Logging.LogType.Data, Logging.LogCaller.JoiPose, OutputFileName);
                 break;
@@ -242,7 +248,7 @@ class PoseReader
         {
             Choices choices = new Choices();
             //GlobalSettings.GrabSetting("voicegrammar");
-            choices.Add(new string[] { "do", "scan all", "scan Abdomen", "scan Bust", "scan Head", "scan LeftArm", "scan RightArm", "scan LeftLeg", "scan RightLeg", "freeze all", "freeze the legs", "freeze the arms", "freeze Abdomen", "freeze Bust", "freeze Head", "freeze LeftArm", "freeze RightArm", "freeze LeftLeg", "freeze RightLeg", "unfreeze all", "unfreeze the legs", "unfreeze the arms", "unfreeze Abdomen", "unfreeze Bust", "unfreeze Head", "unfreeze LeftArm", "unfreeze RightArm", "unfreeze LeftLeg", "unfreeze RightLeg", "program quit", "give me a list of what I can do", "what are the areas of the robot" });
+            choices.Add(new string[] { "do", "scan all", "scan Abdomen", "scan Bust", "scan Head", "scan LeftArm", "scan RightArm", "scan LeftLeg", "scan RightLeg", "freeze all", "freeze the legs", "freeze the arms", "freeze Abdomen", "freeze Bust", "freeze Head", "freeze LeftArm", "freeze RightArm", "freeze LeftLeg", "freeze RightLeg", "unfreeze all", "unfreeze the legs", "unfreeze the arms", "unfreeze Abdomen", "unfreeze Bust", "unfreeze Head", "unfreeze LeftArm", "unfreeze RightArm", "unfreeze LeftLeg", "unfreeze RightLeg", "program quit", "give me a list of what I can do", "what are the areas of the robot", "save the current positions", "clear the data table" });
 
             GrammarBuilder.Append(choices);
 
@@ -264,7 +270,8 @@ class PoseReader
             Logging.WriteLog("Windows SAPI: Recognizer initialized.", Logging.LogType.Information, Logging.LogCaller.JoiPose);
             Console.WriteLine("Windows SAPI: Recognizer initialized.");
             Console.WriteLine("For help, speak the phrase: \"give me a list of what I can do\".");
-            Console.WriteLine("To get a list of supported area operations, speak the phrase: \"what are the areas of the robot\".");
+            Console.WriteLine("To get a list of supported area operations, speak the phrase: \"what are the areas of the robot\". It is recommended to run a \"scan all\" to ensure add data to be saved is current.");
+            Console.WriteLine("To use the data operations, the following phrases are available: \"save the current positions\" and \"clear the data table\".");
             Console.WriteLine("Speak the phrase: \"program quit\" to exit the application.");
         }
         catch (Exception ex)
@@ -299,9 +306,11 @@ class PoseReader
     static async Task Main()
     {
         GlobalSettings = new SettingsDictionary();
+        ShadowDictionary = new Dictionary<string, int>();
         await LoadSettings();
         OutputFileName = GlobalSettings.GrabSetting("outputfile");
         UseVoiceControl = Convert.ToBoolean(GlobalSettings.GrabSetting("voicecontrol"));
+        UseShadowDatabase = Convert.ToBoolean(GlobalSettings.GrabSetting("shadowdatabase"));
         MotorControl = new MotorFunctions();
         MotorSequenceAll = new MotorSequence();
         MotorSequenceAbdomen = new MotorSequence();
@@ -571,6 +580,14 @@ class PoseReader
                 SpeakText("You can scan, freeze, or unfreeze the jointed areas of the joi robot.");
                 break;
             case "what are the areas of the robot":
+                Console.WriteLine("The supported areas are the abdomen, bust, head & neck, left arm, right arm, left leg, and right leg on the joi robot. You can also freeze or unfreeze the arms (upper region) and legs (lower region).");
+                SpeakText("The supported areas are the abdomen, bust, left arm, right arm, left leg, and right leg on the joi robot.");
+                break;
+            case "save the current positions":
+                Console.WriteLine(".");
+                SpeakText("The supported areas are the abdomen, bust, left arm, right arm, left leg, and right leg on the joi robot.");
+                break;
+            case "clear the data table":
                 Console.WriteLine("The supported areas are the abdomen, bust, head & neck, left arm, right arm, left leg, and right leg on the joi robot. You can also freeze or unfreeze the arms (upper region) and legs (lower region).");
                 SpeakText("The supported areas are the abdomen, bust, left arm, right arm, left leg, and right leg on the joi robot.");
                 break;
