@@ -49,6 +49,12 @@ class PoseReader
             case Limbic.LimbicArea.All:
                 MotorControl.SetTorqueOn("all");
                 break;
+            case Limbic.LimbicArea.Arms:
+                MotorControl.SetTorqueOn("upper");
+                break;
+            case Limbic.LimbicArea.Legs:
+                MotorControl.SetTorqueOn("lower");
+                break;
             case Limbic.LimbicArea.Bust:
                 MotorControl.SetTorqueOn(Limbic.Bust);
                 break;
@@ -88,6 +94,12 @@ class PoseReader
                 break;
             case Limbic.LimbicArea.All:
                 MotorControl.SetTorqueOff("all");
+                break;
+            case Limbic.LimbicArea.Arms:
+                MotorControl.SetTorqueOff("upper");
+                break;
+            case Limbic.LimbicArea.Legs:
+                MotorControl.SetTorqueOff("lower");
                 break;
             case Limbic.LimbicArea.Bust:
                 MotorControl.SetTorqueOff(Limbic.Bust);
@@ -157,7 +169,15 @@ class PoseReader
                 Logging.WriteLog(tableBust.ToString(), Logging.LogType.Data, Logging.LogCaller.JoiPose);
                 break;
             case Limbic.LimbicArea.Head:
-
+                var head = MotorSequenceBust.ReturnDictionaryOfPositions(Limbic.Head);
+                var tableHead = new ConsoleTable("bust", "position");
+                foreach (var kvph in head)
+                {
+                    tableHead.AddRow(kvph.Key, kvph.Value);
+                }
+                tableHead.Write();
+                Console.WriteLine();
+                Logging.WriteLog(tableHead.ToString(), Logging.LogType.Data, Logging.LogCaller.JoiPose);
                 break;
             case Limbic.LimbicArea.LeftArm:
                 var leftArm = MotorSequenceLeftArm.ReturnDictionaryOfPositions(Limbic.LeftArm);
@@ -222,7 +242,7 @@ class PoseReader
         {
             Choices choices = new Choices();
             //GlobalSettings.GrabSetting("voicegrammar");
-            choices.Add(new string[] { "do", "scan all", "scan Abdomen", "scan Bust", "scan LeftArm", "scan RightArm", "scan LeftLeg", "scan RightLeg", "freeze all", "freeze Abdomen", "freeze Bust", "freeze LeftArm", "freeze RightArm", "freeze LeftLeg", "freeze RightLeg", "unfreeze all", "unfreeze Abdomen", "unfreeze Bust", "unfreeze LeftArm", "unfreeze RightArm", "unfreeze LeftLeg", "unfreeze RightLeg", "program quit", "give me a list of what I can do", "what are the areas of the robot" });
+            choices.Add(new string[] { "do", "scan all", "scan Abdomen", "scan Bust", "scan Head", "scan LeftArm", "scan RightArm", "scan LeftLeg", "scan RightLeg", "freeze all", "freeze the legs", "freeze the arms", "freeze Abdomen", "freeze Bust", "freeze Head", "freeze LeftArm", "freeze RightArm", "freeze LeftLeg", "freeze RightLeg", "unfreeze all", "unfreeze the legs", "unfreeze the arms", "unfreeze Abdomen", "unfreeze Bust", "unfreeze Head", "unfreeze LeftArm", "unfreeze RightArm", "unfreeze LeftLeg", "unfreeze RightLeg", "program quit", "give me a list of what I can do", "what are the areas of the robot" });
 
             GrammarBuilder.Append(choices);
 
@@ -426,6 +446,10 @@ class PoseReader
                 Scan(Limbic.LimbicArea.Bust);
                 SpeakText("Bust scanned.");
                 break;
+            case "scan Head":
+                Scan(Limbic.LimbicArea.Head);
+                SpeakText("Head scanned.");
+                break;
             case "scan LeftArm":
                 Scan(Limbic.LimbicArea.LeftArm);
                 SpeakText("Left arm scanned.");
@@ -447,6 +471,16 @@ class PoseReader
                 Console.WriteLine("All motors frozen");
                 SpeakText("I have frozen all motors.");
                 break;
+            case "freeze the arms":
+                Freeze(Limbic.LimbicArea.Arms);
+                Console.WriteLine("The arms are frozen");
+                SpeakText("I have frozen the arms.");
+                break;
+            case "freeze the legs":
+                Freeze(Limbic.LimbicArea.Legs);
+                Console.WriteLine("The legs are frozen");
+                SpeakText("I have frozen the legs.");
+                break;
             case "freeze Abdomen":
                 Freeze(Limbic.LimbicArea.Abdomen);
                 Console.WriteLine("Abdomen frozen");
@@ -456,6 +490,11 @@ class PoseReader
                 Freeze(Limbic.LimbicArea.Bust);
                 Console.WriteLine("Bust frozen");
                 SpeakText("I have frozen the Bust.");
+                break;
+            case "freeze Head":
+                Freeze(Limbic.LimbicArea.Head);
+                Console.WriteLine("Head frozen");
+                SpeakText("I have frozen the head.");
                 break;
             case "freeze LeftArm":
                 Freeze(Limbic.LimbicArea.LeftArm);
@@ -482,6 +521,16 @@ class PoseReader
                 Console.WriteLine("All motors unfrozen");
                 SpeakText("I have unfrozen all motors.");
                 break;
+            case "unfreeze the arms":
+                Freeze(Limbic.LimbicArea.Arms);
+                Console.WriteLine("The arms are unfrozen");
+                SpeakText("I have unfrozen the arms.");
+                break;
+            case "unfreeze the legs":
+                Freeze(Limbic.LimbicArea.Legs);
+                Console.WriteLine("The legs are unfrozen");
+                SpeakText("I have unfrozen the legs.");
+                break;
             case "unfreeze Abdomen":
                 Unfreeze(Limbic.LimbicArea.Abdomen);
                 Console.WriteLine("Abdomen unfrozen");
@@ -491,6 +540,11 @@ class PoseReader
                 Unfreeze(Limbic.LimbicArea.Bust);
                 Console.WriteLine("Bust unfrozen");
                 SpeakText("I have unfrozen the bust.");
+                break;
+            case "unfreeze Head":
+                Unfreeze(Limbic.LimbicArea.Head);
+                Console.WriteLine("Head unfrozen");
+                SpeakText("I have unfrozen the head.");
                 break;
             case "unfreeze LeftArm":
                 Unfreeze(Limbic.LimbicArea.LeftArm);
@@ -517,7 +571,7 @@ class PoseReader
                 SpeakText("You can scan, freeze, or unfreeze the jointed areas of the joi robot.");
                 break;
             case "what are the areas of the robot":
-                Console.WriteLine("The supported areas are the abdomen, bust, left arm, right arm, left leg, and right leg on the joi robot.");
+                Console.WriteLine("The supported areas are the abdomen, bust, head & neck, left arm, right arm, left leg, and right leg on the joi robot. You can also freeze or unfreeze the arms (upper region) and legs (lower region).");
                 SpeakText("The supported areas are the abdomen, bust, left arm, right arm, left leg, and right leg on the joi robot.");
                 break;
             case "program quit":
