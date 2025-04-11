@@ -1,7 +1,7 @@
 ﻿//
 // This autonomous intelligent system software is the property of Cartheur Research B.V. Copyright 2021 - 2025, all rights reserved.
 //
-#define windows
+#define linux
 using Cartheur.Animals.Robot;
 using ConsoleTables;
 #if windows
@@ -202,7 +202,7 @@ class PoseReader
         }
         await Task.CompletedTask;
     }
-
+#if windows
     static async Task InitializeSapi()
     {
         GrammarBuilder.Culture = Recognizer.RecognizerInfo.Culture;
@@ -259,7 +259,7 @@ class PoseReader
         }
         await Task.CompletedTask;
     }
-
+#endif
     static async Task Main()
     {
         GlobalSettings = new SettingsDictionary();
@@ -283,8 +283,10 @@ class PoseReader
 
         if (UseVoiceControl)
         {
+            #if windows
             await InitializeSapi();
             await SpeakText("Hold the robot in the desired pose for motor capture, then tell me what you would like to do.");
+            #endif
         }
         if (!UseVoiceControl)
         {
@@ -381,7 +383,7 @@ class PoseReader
         MotorFunctions.DisposeDynamixelMotors();
         await Task.CompletedTask;
     }
-
+#if windows
     static async Task SapiWindowsSpeechRecognized(object sender, SpeechRecognizedEventArgs e)
     {
         switch (e.Result.Text)
@@ -460,4 +462,5 @@ class PoseReader
         }
 
     }
+#endif
 }
