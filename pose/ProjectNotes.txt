@@ -10,3 +10,58 @@ Joi standing and walking
 	1207: Cleaned the code and have 300-lines of focused-joi.
 	1214: Now to add the voice-control interface. Since: How can I set the positions when both hands will be required? Sure, locked into windoze, but this is a calibratino program after all.
 	1256: Gotten as far as I can. Next session!
+11.04.2025
+	1836: Gotten a solid standing position, it is thus.
+ ---------------------------
+ | motor        | position | Would be a good idea to save this into a database and get visibility on alarming if/when a motor experiences a fault.
+ ---------------------------
+ | abs_y        | 1984     |
+ ---------------------------
+ | abs_x        | 2154     |
+ ---------------------------
+ | abs_z        | 1986     |
+ ---------------------------
+ | bust_y       | 1853     |
+ ---------------------------
+ | bust_x       | 2021     |
+ ---------------------------
+ | head_z       | 528      |
+ ---------------------------
+ | head_y       | 519      |
+ ---------------------------
+ | l_shoulder_y | 2303     |
+ ---------------------------
+ | l_shoulder_x | 2975     |
+ ---------------------------
+ | l_arm_z      | 2048     |
+ ---------------------------
+ | l_elbow_y    | 1106     |
+ ---------------------------
+ | r_shoulder_y | 1764     |
+ ---------------------------
+ | r_shoulder_x | 939      |
+ ---------------------------
+ | r_arm_z      | 2002     |
+ ---------------------------
+ | r_elbow_y    | 2797     |
+ ---------------------------
+ | l_hip_z      | 2106     |
+ ---------------------------
+ | l_hip_y      | 1863     |
+ ---------------------------
+ | l_knee_y     | 2463     |
+ ---------------------------
+ | l_ankle_y    | 1858     |
+ ---------------------------
+ | l_hip_x      | 2010     |
+ ---------------------------
+ | r_hip_z      | 2039     |
+ ---------------------------
+ | r_hip_y      | 2203     |
+ ---------------------------
+ | r_knee_y     | 1540     |
+ ---------------------------
+ | r_ankle_y    | 2302     |
+ ---------------------------
+ | r_hip_x      | 1949     |
+ ---------------------------
