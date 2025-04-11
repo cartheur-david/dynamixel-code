@@ -12,6 +12,7 @@ Joi standing and walking
 	1256: Gotten as far as I can. Next session!
 11.04.2025
 	1836: Gotten a solid standing position, it is thus.
+	2014: Removed the computer in the head, and need to bind cables to the camera. Did some preliminary tests and everything is working perfectly. Next to work on saving so that animations can be built-up.
  ---------------------------
  | motor        | position | Would be a good idea to save this into a database and get visibility on alarming if/when a motor experiences a fault.
  ---------------------------
