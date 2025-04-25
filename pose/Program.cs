@@ -288,23 +288,41 @@ class PoseReader
         }
         await Task.CompletedTask;
     }
-
+#endif
     static async Task SpeakText(string input)
     {
-        try
-        {
-            PromptBuilder.ClearContent();
-            PromptBuilder.AppendText(input);
-            SpeechSynth.SelectVoiceByHints(VoiceGender.Female, VoiceAge.Adult);
-            SpeechSynth.Speak(PromptBuilder);
-        }
-        catch (Exception ex)
-        {
-            Logging.WriteLog(ex.Message, Logging.LogType.Error, Logging.LogCaller.JoiPose);
-        }
+        #if linux
+            input = input.TrimEnd(new char[] { ' ', ',', '.', '!' });
+            input = input.Replace(" ", "_");
+            try
+            {
+               var output = "espeak".Bash(input);
+            Logging.WriteLog(output, Logging.LogType.Information, Logging.LogCaller.Voice);
+            }
+            catch (Exception ex)
+            {
+                Logging.WriteLog(ex.Message, Logging.LogType.Error, Logging.LogCaller.Voice);
+            }
+#endif
+#if windows
+            try
+            {
+                PromptBuilder.ClearContent();
+                PromptBuilder.AppendText(input);
+                SpeechSynth.SelectVoiceByHints(VoiceGender.Female, VoiceAge.Adult);
+                SpeechSynth.Speak(PromptBuilder);
+
+            }
+            catch (Exception ex)
+            {
+                Logging.WriteLog(ex.Message, Logging.LogType.Error, Logging.LogCaller.AeonRuntime);
+            }
+
+#endif
+
         await Task.CompletedTask;
     }
-#endif
+
     static async Task Main()
     {
         GlobalSettings = new SettingsDictionary();
@@ -338,12 +356,7 @@ class PoseReader
             {
                 UserInput = Console.ReadLine();
                 if (UserInput == "program quit")
-                #if windows
                     await SpeakText("Detected quit. Closing the application.");
-                #endif
-                #if linux
-                    await Bash
-                #endif
                 break;
             }
         }
