@@ -1,7 +1,7 @@
 ﻿//
 // This autonomous intelligent system software is the property of Cartheur Research B.V. Copyright 2021 - 2025, all rights reserved.
 //
-#define windows
+#define linux
 using Cartheur.Animals.Robot;
 using ConsoleTables;
 #if windows
@@ -338,7 +338,12 @@ class PoseReader
             {
                 UserInput = Console.ReadLine();
                 if (UserInput == "program quit")
+                #if windows
                     await SpeakText("Detected quit. Closing the application.");
+                #endif
+                #if linux
+                    await Bash
+                #endif
                 break;
             }
         }
