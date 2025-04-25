@@ -82,7 +82,11 @@ namespace Cartheur.Animals.Robot
             /// <summary>
             /// Motor control
             /// </summary>
-            MotorControl
+            MotorControl,
+            /// <summary>
+            /// Voicing
+            /// </summary>
+            Voice
         }
         /// <summary>
         /// The last message passed to logging.
