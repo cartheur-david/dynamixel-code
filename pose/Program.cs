@@ -291,7 +291,7 @@ class PoseReader
 #endif
     static async Task SpeakText(string input)
     {
-        #if linux
+#if linux
             input = input.TrimEnd(new char[] { ' ', ',', '.', '!' });
             input = input.Replace(" ", "_");
             try
