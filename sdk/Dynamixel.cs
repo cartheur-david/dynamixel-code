@@ -27,7 +27,7 @@ namespace Cartheur.Animals.Robot
     #if linux64
         const string LibraryPath = "lib/dxl_x64_c.so";
     #endif
-    #if linux_sbc
+    #if linux
         const string LibraryPath = "lib/dxl_sbc_c.so";
     #endif
         #if linux32
