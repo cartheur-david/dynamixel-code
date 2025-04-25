@@ -242,9 +242,13 @@ class PoseReader
         }
         await Task.CompletedTask;
     }
-#if windows
+
     static async Task InitializeSapi()
     {
+#if linux
+        await SpeakText("SAPI only on windows.");
+#endif
+#if windows
         GrammarBuilder.Culture = Recognizer.RecognizerInfo.Culture;
         try
         {
@@ -286,10 +290,10 @@ class PoseReader
             Console.WriteLine("Ready for pose operations.");
             await SpeakText("Ready to do pose engineering!");
         }
+#endif
         await Task.CompletedTask;
     }
-#endif
-    static async Task SpeakText(string input)
+        static async Task SpeakText(string input)
     {
 #if linux
             input = input.TrimEnd(new char[] { ' ', ',', '.', '!' });
@@ -348,10 +352,8 @@ class PoseReader
 
         if (UseVoiceControl)
         {
-            #if windows
             await InitializeSapi();
             await SpeakText("Hold the robot in the desired pose for joint capture, then tell me what you would like to do.");
-#endif
             while (true)
             {
                 UserInput = Console.ReadLine();
