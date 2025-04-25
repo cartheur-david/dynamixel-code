@@ -20,7 +20,12 @@ Joi standing and walking
 	1232: Well, seems it is not present.
 	1233: Now to test this code.
 	1239: Program is working but motor overloading experienced. Need to walk slower into this.
+	1623: A reminder to build a linux_sbc (linux) version of dyamixel.
+	
 
+
+
+ERRATA
  ---------------------------
  | motor        | position | Would be a good idea to save this into a database and get visibility on alarming if/when a motor experiences a fault.
  ---------------------------
