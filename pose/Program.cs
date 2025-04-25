@@ -1,7 +1,7 @@
 ﻿//
 // This autonomous intelligent system software is the property of Cartheur Research B.V. Copyright 2021 - 2025, all rights reserved.
 //
-#define linux // linux-windows pragma also in Dynamixel.cs of the SDK project.
+#define windows // linux-windows pragma also in Dynamixel.cs of the SDK project.
 using Cartheur.Animals.Robot;
 using ConsoleTables;
 #if windows
@@ -319,7 +319,7 @@ class PoseReader
             }
             catch (Exception ex)
             {
-                Logging.WriteLog(ex.Message, Logging.LogType.Error, Logging.LogCaller.AeonRuntime);
+                Logging.WriteLog(ex.Message, Logging.LogType.Error, Logging.LogCaller.Voice);
             }
 
 #endif
