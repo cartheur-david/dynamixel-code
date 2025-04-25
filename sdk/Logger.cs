@@ -147,6 +147,7 @@ namespace Cartheur.Animals.Robot
         /// <param name="message">The message to log. Space between the message and log type enumeration provided.</param>
         /// <param name="logType">Type of the log.</param>
         /// <param name="caller">The class creating the log entry.</param>
+        /// <param name="LogModelFile">When using a customized filename.</param>
         public static void WriteLog(string message, LogType logType, LogCaller caller, string LogModelFile)
         {
             if (LogModelFile == "")
