@@ -1,7 +1,7 @@
 //
 // This autonomous intelligent system software is the property of Cartheur Research B.V. Copyright 2021 - 2025, all rights reserved.
 //
-#define windows
+#define linux
 using System.Runtime.InteropServices;
 
 namespace Cartheur.Animals.Robot
@@ -28,7 +28,7 @@ namespace Cartheur.Animals.Robot
         const string LibraryPath = "lib/dxl_x64_c.so";
     #endif
     #if linux
-        const string LibraryPath = "lib/dxl_sbc_c.so";
+        const string LibraryPath = "lib/libdxl_sbc_c.so";
     #endif
         #if linux32
         const string LibraryPath = "lib/dxl_x86_c.so";
