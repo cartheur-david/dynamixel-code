@@ -13,6 +13,14 @@ Joi standing and walking
 11.04.2025
 	1836: Gotten a solid standing position, it is thus.
 	2014: Removed the computer in the head, and need to bind cables to the camera. Did some preliminary tests and everything is working perfectly. Next to work on saving so that animations can be built-up.
+25.04.2025
+	1006: Cartheur Joi is assembed and ready for testing. No blocks are perceived but let's do an ops check!
+	1012: Speakers, microphone, and motors being read. 
+	1228: A complete test has been performed, tuning done via Interactive code, need to address motor noise when motors on.
+	1232: Well, seems it is not present.
+	1233: Now to test this code.
+	1239: Program is working but motor overloading experienced. Need to walk slower into this.
+
  ---------------------------
  | motor        | position | Would be a good idea to save this into a database and get visibility on alarming if/when a motor experiences a fault.
  ---------------------------
