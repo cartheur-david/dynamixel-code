@@ -22,7 +22,7 @@ Joi standing and walking
 	1239: Program is working but motor overloading experienced. Need to walk slower into this.
 	1623: A reminder to build a linux_sbc (linux) version of dyamixel.
 	1633: Made pragmas cleaner, added .bash play extension for linux machines. No *_sbc for dynamixel library.
-
+	1750: Built the sbc dynamixel library. Error was my bad!
 
 
 ERRATA
